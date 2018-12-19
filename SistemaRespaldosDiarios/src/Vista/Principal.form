@@ -218,9 +218,6 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Usuario"/>
                       </Properties>
-                      <AccessibilityProperties>
-                        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Usuario"/>
-                      </AccessibilityProperties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="labelContra">
                       <Properties>

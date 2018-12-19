@@ -34,7 +34,8 @@ public class Usuario {
     }
     private void llamarUsuarioDataBase(String Usuario, String Contra) throws SQLException{
         ResultSet res = Conectar.Consulta("Select ID, Usuario, Nombre from Usuario where Usuario = '"+Usuario+"' and Clave = '"+Contra+"'");
-        while (res.next()) {
+        try {
+            while (res.next()) {
             this.Usuario = res.getString(2);
             this.Nombre = res.getString(3);
             if(res.getString(1) != null){
@@ -43,6 +44,9 @@ public class Usuario {
                 Existe = false;
             }
         }
+        } catch (Exception e) {
+        }
+        
         
     }
     

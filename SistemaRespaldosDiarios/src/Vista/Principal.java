@@ -6,8 +6,10 @@
 package Vista;
 
 import Controlador.Archivos;
+import Controlador.SSH;
 import Modelo.Fecha;
 import Modelo.Usuario;
+import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.sql.Date;
 import javax.swing.JOptionPane;
@@ -235,6 +237,7 @@ public class Principal extends javax.swing.JFrame {
        if(us.ExisteUsuario()){
            JOptionPane.showMessageDialog(null, "Bienvenido "+us.getNombre());
            Reestablecer();
+           ConectarSSh();
        }else{
            JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
            Reestablecer();
@@ -320,5 +323,18 @@ public class Principal extends javax.swing.JFrame {
     private org.edisoncor.gui.passwordField.PasswordField txtContra;
     private org.edisoncor.gui.textField.TextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+    private void ConectarSSh() {
+        try {
+            SSH sshConnector = new SSH();
+            sshConnector.connect("", "", "", 80);
+            String result = sshConnector.executeCommand("ls -l");
+            sshConnector.disconnect();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+            System.out.println(ex.getMessage());
+        }
+    }
 
 }

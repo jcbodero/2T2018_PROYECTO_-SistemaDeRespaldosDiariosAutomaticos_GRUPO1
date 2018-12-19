@@ -18,25 +18,24 @@ public class Conectar {
     
     public static Connection getConexion(){
        
-        String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
+        String url = "jdbc:sqlserver://DESKTO-CHRINL5:1433;databaseName=RespaldosDiarios";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
         }catch (ClassNotFoundException e){
-            JOptionPane.showMessageDialog(null, "No se pudo establece la conexion... revisar Driver" + e.getMessage(),
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se pudo establece la conexion... revisar Driver.\n" + e.getMessage(),
+            ".\nError de Conexion.\n",JOptionPane.ERROR_MESSAGE);
         }
         try{
             contacto = DriverManager.getConnection(url, Conectar.usuario, Conectar.password);
         }catch (SQLException e){
-             JOptionPane.showMessageDialog(null, "Error" + e.getMessage(),
+             JOptionPane.showMessageDialog(null, "Error.\n",
             "Error de Conexion",JOptionPane.ERROR_MESSAGE);
         }
         return contacto;
     }
     
-    
-  
+
     public static ResultSet Consulta(String consulta){
         Connection con = getConexion();
         Statement declara;
@@ -44,9 +43,8 @@ public class Conectar {
             declara=con.createStatement();
             ResultSet respuesta = declara.executeQuery(consulta);
             return respuesta;
-        }catch (SQLException e){
-            JOptionPane.showMessageDialog(null, "Error " + e.getMessage(),
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
+        }catch (Exception e){
+            
         }
         return null;
     }

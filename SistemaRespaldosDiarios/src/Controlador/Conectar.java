@@ -18,7 +18,7 @@ public class Conectar {
     
     public static Connection getConexion(){
        
-        String url = "jdbc:sqlserver://DESKTO-CHRINL5:1433;databaseName=RespaldosDiarios";
+        String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             

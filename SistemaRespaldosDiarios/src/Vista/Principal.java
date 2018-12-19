@@ -5,12 +5,11 @@
  */
 package Vista;
 
-import Controlador.Conectar;
+import Controlador.Archivos;
+import Modelo.Fecha;
 import Modelo.Usuario;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Date;
 import javax.swing.JOptionPane;
 
 /*
@@ -253,6 +252,7 @@ public class Principal extends javax.swing.JFrame {
             }
             if (txtContra.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese Contraseña");
+                Archivos.escribirDatos(txtUsuario.getText()+";"+ListaDispositivos.getSelectedItem()+";"+"Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs");
                 return false;
             }
             if (ListaDispositivos.getSelectedIndex() == 0) {

@@ -12,13 +12,13 @@ import javax.swing.JOptionPane;
 public class Conectar {
     
     static Connection contacto = null;
-    private static String usuario = "Administrador";
-    private static String password = "Fcnm2018";
+    private static String usuario = "Noc";
+    private static String password = "administrador";
     
     
     public static Connection getConexion(){
        
-        String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=sistemasFCNM";
+        String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             

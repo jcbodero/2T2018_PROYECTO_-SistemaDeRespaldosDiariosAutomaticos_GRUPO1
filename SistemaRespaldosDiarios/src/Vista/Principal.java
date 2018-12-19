@@ -5,7 +5,12 @@
  */
 package Vista;
 
+import Controlador.Conectar;
+import Modelo.Usuario;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -178,21 +183,20 @@ public class Principal extends javax.swing.JFrame {
         contenedorVentanaLayout.setHorizontalGroup(
             contenedorVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                .addGroup(contenedorVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(jLabel4)))
+                .addGap(95, 95, 95)
+                .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(165, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorVentanaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(134, 134, 134))
         );
         contenedorVentanaLayout.setVerticalGroup(
             contenedorVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(63, 63, 63)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(32, 32, 32)
                 .addComponent(panelShadow1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -225,23 +229,45 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && ListaDispositivos.getSelectedIndex() == 0) {
+       if (!IngresoValido()){ 
+           return;
+       }
+       Usuario us = new Usuario(txtUsuario.getText(),txtContra.getText());
+       if(us.ExisteUsuario()){
+           JOptionPane.showMessageDialog(null, "Bienvenido "+us.getNombre());
+           Reestablecer();
+       }else{
+           JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
+           Reestablecer();
+       }
+       
+    }//GEN-LAST:event_btnLoginActionPerformed
+    private boolean IngresoValido(){
+         if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && ListaDispositivos.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Ingrese Usuario, Contraseña Y seleccione Dispositivo");
+            return false;
         } else {
             if (txtUsuario.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese Usuario");
+                return false;
             }
             if (txtContra.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese Contraseña");
+                return false;
             }
             if (ListaDispositivos.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(null, "Seleccione Dispositivo");
+                return false;
             }
         }
-
-
-    }//GEN-LAST:event_btnLoginActionPerformed
-
+        
+        return true;
+    }
+    private void Reestablecer(){
+        txtContra.setText(null);
+        txtUsuario.setText(null);
+        ListaDispositivos.setSelectedIndex(0);
+    }
     /**
      * @param args the command line arguments
      */

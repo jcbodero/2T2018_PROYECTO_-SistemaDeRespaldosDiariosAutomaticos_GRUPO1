@@ -43,16 +43,18 @@ public class SSH {
      *                                SSH establecida.
      */
     public void connect(String username, String password, String host, int port)
-        throws JSchException, IllegalAccessException {
+            throws JSchException, IllegalAccessException {
         if (this.session == null || !this.session.isConnected()) {
             JSch jsch = new JSch();
- 
+
             this.session = jsch.getSession(username, host, port);
             this.session.setPassword(password);
- 
+
             // Parametro para no validar key de conexion.
             //this.session.setConfig(null);//("StrictHostKeyChecking", "no");
- 
+            java.util.Properties config = new java.util.Properties();
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
             this.session.connect();
         } else {
             throw new IllegalAccessException("Sesion SSH ya iniciada.");

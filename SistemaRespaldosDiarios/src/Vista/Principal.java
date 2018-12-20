@@ -11,7 +11,10 @@ import Modelo.Fecha;
 import Modelo.Usuario;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -23,7 +26,7 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
-    public Principal() throws IOException {
+    public Principal(){
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -233,16 +236,26 @@ public class Principal extends javax.swing.JFrame {
        if (!IngresoValido()){ 
            return;
        }
-       Usuario us = new Usuario(txtUsuario.getText(),txtContra.getText());
-       if(us.ExisteUsuario()){
-           JOptionPane.showMessageDialog(null, "Bienvenido "+us.getNombre());
-           Reestablecer();
-           ConectarSSh();
-       }else{
-           JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
-           Reestablecer();
-       }
-       
+        Usuario us = new Usuario(txtUsuario.getText(), txtContra.getText());
+        if (us.ExisteUsuario()) {
+            JOptionPane.showMessageDialog(null, "Bienvenido " + us.getNombre());
+            Reestablecer();
+            try {
+                try {
+                    ConectarSSh();
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (JSchException ex) {
+                System.out.println(ex.getMessage());
+            } catch (IllegalAccessException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
+            Reestablecer();
+        }
+
     }//GEN-LAST:event_btnLoginActionPerformed
     private boolean IngresoValido(){
          if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && ListaDispositivos.getSelectedIndex() == 0) {
@@ -300,10 +313,9 @@ public class Principal extends javax.swing.JFrame {
         //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new Principal().setVisible(true);
-            } catch (IOException ex) {
-            }
+
+            new Principal().setVisible(true);
+
         });
     }
 
@@ -324,15 +336,14 @@ public class Principal extends javax.swing.JFrame {
     private org.edisoncor.gui.textField.TextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
-    private void ConectarSSh() {
+    private void ConectarSSh() throws JSchException, IllegalAccessException, IOException {
         try {
             SSH sshConnector = new SSH();
-            sshConnector.connect("", "", "", 80);
-            String result = sshConnector.executeCommand("ls -l");
+            sshConnector.connect("admin", "admin", "192.168.100.2", 22);
+            String result = sshConnector.executeCommand("show ip int bri");
+            System.out.println(result);
             sshConnector.disconnect();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
+        } catch (ConnectException ex) {
             System.out.println(ex.getMessage());
         }
     }

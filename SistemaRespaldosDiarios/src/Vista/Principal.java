@@ -6,13 +6,13 @@
 package Vista;
 
 import Controlador.Archivos;
+import Controlador.Conectar;
 import Controlador.SSH;
 import Modelo.Fecha;
 import Modelo.Usuario;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -251,7 +251,11 @@ public class Principal extends javax.swing.JFrame {
             } catch (IllegalAccessException ex) {
                 System.out.println(ex.getMessage());
             }
-        } else {
+        } else if( Conectar.IsServerCaido){
+            JOptionPane.showMessageDialog(null, "SERVIDOR CAIDO !!!",
+            "Error",JOptionPane.ERROR_MESSAGE);
+            Reestablecer();
+        }else{
             JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
             Reestablecer();
         }
@@ -339,9 +343,9 @@ public class Principal extends javax.swing.JFrame {
     private void ConectarSSh() throws JSchException, IllegalAccessException, IOException {
         try {
             SSH sshConnector = new SSH();
-            sshConnector.connect("admin", "admin", "192.168.100.2", 22);
+            sshConnector.connect("admin", "admin", "192.168.1.1", 22);
             String result = sshConnector.executeCommand("show ip int bri");
-            System.out.println(result);
+            JOptionPane.showMessageDialog(null, "CONEXION SSH ESTABLECIDA!!");
             sshConnector.disconnect();
         } catch (ConnectException ex) {
             System.out.println(ex.getMessage());

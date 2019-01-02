@@ -14,40 +14,44 @@ import java.sql.SQLException;
  * @author JULIO
  */
 public class Usuario {
+
     private String Usuario;
     private String Nombre;
-    private boolean Existe; 
-    public Usuario(String Usuario, String Contra){
+    private boolean Existe;
+    
+
+    public Usuario(String Usuario, String Contra) {
         try {
             llamarUsuarioDataBase(Usuario, Contra);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            Conectar.IsServerCaido = true;
         }
-    } 
+    }
+
     public String getUsuario() {
         return Usuario;
-    } 
+    }
+
     public String getNombre() {
         return Nombre;
     }
-    public Boolean ExisteUsuario() {       
+
+    public Boolean ExisteUsuario() {
         return Existe;
     }
-    private void llamarUsuarioDataBase(String Usuario, String Contra) throws SQLException{
-        ResultSet res = Conectar.Consulta("Select ID, Usuario, Nombre from Usuario where Usuario = '"+Usuario+"' and Clave = '"+Contra+"'");
+
+    private void llamarUsuarioDataBase(String Usuario, String Contra) throws SQLException {
+        ResultSet res = Conectar.Consulta("Select Usuario, Nombre from Administrador where Usuario = '" + Usuario + "' and Clave = '" + Contra + "';");
         try {
             while (res.next()) {
-            this.Usuario = res.getString(2);
-            this.Nombre = res.getString(3);
-            if(res.getString(1) != null){
-                Existe = true;
-            }else{
-                Existe = false;
+                this.Usuario = res.getString(1);
+                this.Nombre = res.getString(2);
+                Existe = this.Usuario != null;
             }
+        } catch (NullPointerException e) {
         }
-        } catch (Exception e) {
-        }
-        
-        
+
     }
-    
+
 }

@@ -12,15 +12,17 @@ import javax.swing.JOptionPane;
 public class Conectar {
     
     static Connection contacto = null;
-    private static String usuario = "Noc";
-    private static String password = "administrador";
-    
+    private static String usuario = "estudiante";
+    private static String password = "estudiante";
+    public static  boolean IsServerCaido = false;
     
     public static Connection getConexion(){
        
-        String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
+        //String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
+        String url = "jdbc:mysql://192.168.3.3:3306/RespaldosDiarios?zeroDateTimeBehavior=convertToNull";
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("org.gjt.mm.mysql.Driver");
             
         }catch (ClassNotFoundException e){
             JOptionPane.showMessageDialog(null, "No se pudo establece la conexion... revisar Driver.\n" + e.getMessage(),
@@ -29,8 +31,8 @@ public class Conectar {
         try{
             contacto = DriverManager.getConnection(url, Conectar.usuario, Conectar.password);
         }catch (SQLException e){
-             JOptionPane.showMessageDialog(null, "Error.\n",
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
+             
+             Conectar.IsServerCaido  =true;
         }
         return contacto;
     }
@@ -43,8 +45,8 @@ public class Conectar {
             declara=con.createStatement();
             ResultSet respuesta = declara.executeQuery(consulta);
             return respuesta;
-        }catch (Exception e){
-            
+        }catch (SQLException e){
+            Conectar.IsServerCaido  = true;
         }
         return null;
     }

@@ -9,6 +9,6 @@ package Modelo;
  *
  * @author JULIO
  */
-public class Clases {
+public class Dispositivo {
     
 }

@@ -34,7 +34,6 @@ public class HiloNombreDispositivo extends Thread{
             try {
                 for (String dirip : direccionesIp) {
                     String resultado = SSH.ConectarSSh("admin", "admin", dirip, 22, "show run | include hostname");
-                    resultado.replace("!n","\n");
                     System.out.println(resultado);
                     if (resultado != null) {
                         if (!containsResultado(resultado)) {

@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
  * Esta clase contiene la interfaz gráfica de la pantalla principal
  * de nuestra aplicación. Permite escoger el tipo de dispositivo del que
  * se desea hacer respaldo
- * @author Luis Macas, Christin Ochoa, Martin Herrera
+ * @author 
  * @version:5/8/2018
  */
 public class Principal extends javax.swing.JFrame{
@@ -286,12 +286,12 @@ public class Principal extends javax.swing.JFrame{
     
     private void llenarTablaEncendidos() {
         for (Dispositivo dispo : h2.getListaDispositivo()) {
-            if (!exiteFila(dispo.getNombre()) && dispo.getNombre().length()!=0) {
+            if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length()!=0) {
                 DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
-                modelo.addRow(new Object[]{dispo.getNombre(), dispo.getEstado()});
+                modelo.addRow(new Object[]{separaString(dispo.getNombre()), dispo.getEstado()});
                 System.out.println(dispo);
             }
-            else if(exiteFila(dispo.getNombre()) && dispo.getNombre().length()!=0 ){
+            else if(exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length()!=0 ){
                 reemplazarFila(dispo);
             }
         }
@@ -335,13 +335,28 @@ public class Principal extends javax.swing.JFrame{
         }
         for (int i = 0; i < estadoDispositivo.getRowCount(); i++) {
             String valor  = estadoDispositivo.getValueAt(i, 0).toString().trim();
-            if(valor.equals(dato.getNombre())){
+            if(valor.equals(separaString(dato.getNombre()))){
                 estadoDispositivo.setValueAt(dato.getEstado(),i,1);
                 
             }
         }
         
     }
+    /**
+     * @param cadena 
+     * @return  
+     * @autor Eduardo Veintimilla
+     */
+    public String separaString(String cadena){
+        String lista[] = cadena.split(" ");
+        for (int i = 0; i < lista.length ; i++) {
+            lista[i] = lista[i].replace(" ", "");
+            lista[i] = lista[i].replace("\n", "");
+            
+        }
+        return lista[1];
+}
+
 
     /**
      * @param args the command line arguments

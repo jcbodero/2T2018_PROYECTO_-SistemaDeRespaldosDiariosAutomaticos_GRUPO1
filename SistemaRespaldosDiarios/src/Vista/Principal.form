@@ -75,7 +75,7 @@
                   </Group>
                   <Component id="jSeparator1" alignment="0" min="-2" pref="513" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="63" max="32767" attributes="0"/>
+              <EmptySpace pref="59" max="32767" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="225" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -177,7 +177,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Lucida Bright" size="36" style="1"/>
+          <Font name="Arial" size="36" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Sistemas Respaldos Diarios Automatico"/>

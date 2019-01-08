@@ -83,7 +83,7 @@ public class Principal extends javax.swing.JFrame{
         ));
         jScrollPane2.setViewportView(estadoDispositivo);
 
-        jLabel4.setFont(new java.awt.Font("Lucida Bright", 1, 36)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Sistemas Respaldos Diarios Automatico");
 
@@ -167,7 +167,7 @@ public class Principal extends javax.swing.JFrame{
                                             .addGap(18, 18, 18)
                                             .addComponent(btnLogin)))))))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()

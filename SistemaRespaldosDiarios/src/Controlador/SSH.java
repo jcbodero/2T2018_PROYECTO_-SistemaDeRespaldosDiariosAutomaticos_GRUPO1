@@ -25,7 +25,7 @@ public class SSH {
     /**
      * Constante que representa un enter.
      */
-    private static final String ENTER_KEY = "n";
+    private static final String ENTER_KEY = "\n";
     /**
      * Sesión SSH establecida.
      */

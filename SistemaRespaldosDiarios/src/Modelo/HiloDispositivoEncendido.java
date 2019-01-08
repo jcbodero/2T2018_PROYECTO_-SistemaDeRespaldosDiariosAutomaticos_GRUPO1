@@ -12,23 +12,22 @@ import Controlador.Ping;
  * @author JULIO
  */
 public class HiloDispositivoEncendido extends Thread{
-    private String dirip;
-    private String estado = "Off";
-
-    public HiloDispositivoEncendido(String dirip) {
-        this.dirip = dirip;
+    private Dispositivo dispositivo;
+    public HiloDispositivoEncendido(String dirip, String nombre) {
+        this.dispositivo= new Dispositivo(dirip, nombre);
     }
     @Override
 	public void run() {
-            Ping p1 = new Ping(dirip);
-            while (p1.isReachable()){
-                this.estado ="On";
+            
+            while (true){
+               
             }
-            this.estado = "Off";
+                
+            
         }
 
     public String getEstado() {
-        return estado;
+        return dispositivo.getEstado();
     }
     
         

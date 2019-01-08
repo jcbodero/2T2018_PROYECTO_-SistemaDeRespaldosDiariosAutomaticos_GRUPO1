@@ -8,13 +8,16 @@ package Vista;
 import Controlador.Archivos;
 import Controlador.Conectar;
 import Controlador.SSH;
+import Modelo.Dispositivo;
 import Modelo.Fecha;
 import Modelo.HiloDispositivoEncendido;
 import Modelo.HiloNombreDispositivo;
 import Modelo.Usuario;
+import Modelo.variablesGlobales;
 import com.jcraft.jsch.JSchException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -30,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Principal extends javax.swing.JFrame{
     
-    private HiloDispositivoEncendido h1;
+    private LinkedList<HiloDispositivoEncendido> listaHilos;
     private HiloNombreDispositivo h2;
     
     public Principal(){
@@ -49,68 +52,22 @@ public class Principal extends javax.swing.JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        contenedorVentana = new org.edisoncor.gui.panel.Panel();
-        jLabel4 = new javax.swing.JLabel();
-        contenedorLogin = new org.edisoncor.gui.panel.PanelTranslucido();
-        ListaDispositivos = new javax.swing.JComboBox<>();
-        labelUsuario = new javax.swing.JLabel();
-        labelContra = new javax.swing.JLabel();
-        labelDispositivo = new javax.swing.JLabel();
-        txtContra = new org.edisoncor.gui.passwordField.PasswordField();
-        txtUsuario = new org.edisoncor.gui.textField.TextField();
-        btnLogin = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
         imgLogin = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         estadoDispositivo = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        labelUsuario = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        txtContra = new org.edisoncor.gui.passwordField.PasswordField();
+        txtUsuario = new org.edisoncor.gui.textField.TextField();
+        labelContra = new javax.swing.JLabel();
+        labelDispositivo = new javax.swing.JLabel();
+        ListaDispositivos = new javax.swing.JComboBox<>();
+        btnLogin = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-
-        contenedorVentana.setColorPrimario(new java.awt.Color(102, 102, 255));
-
-        jLabel4.setFont(new java.awt.Font("Lucida Bright", 1, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Sistemas Respaldos Diarios Automatico");
-
-        contenedorLogin.setColorPrimario(new java.awt.Color(153, 153, 255));
-
-        ListaDispositivos.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        ListaDispositivos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "[Seleccione Dispositivo]", "SW-GYE", "ROU-GYE", "ROU-UIO" }));
-
-        labelUsuario.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
-        labelUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        labelUsuario.setText("Usuario");
-
-        labelContra.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
-        labelContra.setForeground(new java.awt.Color(255, 255, 255));
-        labelContra.setText("Contraseña");
-
-        labelDispositivo.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
-        labelDispositivo.setForeground(new java.awt.Color(255, 255, 255));
-        labelDispositivo.setText("DISPOSITIVOS");
-
-        txtContra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtContra.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
-
-        txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtUsuario.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
-
-        btnLogin.setBackground(new java.awt.Color(204, 204, 255));
-        btnLogin.setFont(new java.awt.Font("Gill Sans MT", 1, 16)); // NOI18N
-        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/entrar.png"))); // NOI18N
-        btnLogin.setText("Login");
-        btnLogin.setBorderPainted(false);
-        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnLogin.setDefaultCapable(false);
-        btnLogin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
 
         imgLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imgLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/login.png"))); // NOI18N
@@ -126,126 +83,132 @@ public class Principal extends javax.swing.JFrame{
         ));
         jScrollPane2.setViewportView(estadoDispositivo);
 
-        javax.swing.GroupLayout contenedorLoginLayout = new javax.swing.GroupLayout(contenedorLogin);
-        contenedorLogin.setLayout(contenedorLoginLayout);
-        contenedorLoginLayout.setHorizontalGroup(
-            contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contenedorLoginLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorLoginLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(contenedorLoginLayout.createSequentialGroup()
-                                .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(contenedorLoginLayout.createSequentialGroup()
-                                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                                        .addComponent(labelDispositivo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                                        .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(632, 632, 632))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorLoginLayout.createSequentialGroup()
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                        .addGap(231, 231, 231)
-                        .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLogin)))
-                .addGap(679, 679, 679))
-        );
-        contenedorLoginLayout.setVerticalGroup(
-            contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contenedorLoginLayout.createSequentialGroup()
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorLoginLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(contenedorLoginLayout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorLoginLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addGroup(contenedorLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+        jLabel4.setFont(new java.awt.Font("Lucida Bright", 1, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Sistemas Respaldos Diarios Automatico");
 
-        javax.swing.GroupLayout contenedorVentanaLayout = new javax.swing.GroupLayout(contenedorVentana);
-        contenedorVentana.setLayout(contenedorVentanaLayout);
-        contenedorVentanaLayout.setHorizontalGroup(
-            contenedorVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contenedorVentanaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(contenedorLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 575, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(252, 252, 252))
-            .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                .addGap(192, 192, 192)
-                .addComponent(jLabel4)
-                .addContainerGap(209, Short.MAX_VALUE))
-        );
-        contenedorVentanaLayout.setVerticalGroup(
-            contenedorVentanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(contenedorVentanaLayout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(contenedorLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
-        );
+        labelUsuario.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
+        labelUsuario.setText("Usuario");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(contenedorVentana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(contenedorVentana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        txtContra.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtContra.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
 
-        contenedorVentana.getAccessibleContext().setAccessibleName("");
+        txtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtUsuario.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 14)); // NOI18N
+
+        labelContra.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
+        labelContra.setText("Contraseña");
+
+        labelDispositivo.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
+        labelDispositivo.setText("DISPOSITIVOS");
+
+        ListaDispositivos.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
+        ListaDispositivos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "[Seleccione Dispositivo]", "SW-GYE", "ROU-GYE", "ROU-UIO" }));
+
+        btnLogin.setBackground(new java.awt.Color(204, 204, 255));
+        btnLogin.setFont(new java.awt.Font("Gill Sans MT", 1, 16)); // NOI18N
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/entrar.png"))); // NOI18N
+        btnLogin.setText("Login");
+        btnLogin.setBorderPainted(false);
+        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogin.setDefaultCapable(false);
+        btnLogin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        btnSalir.setBackground(new java.awt.Color(204, 204, 255));
+        btnSalir.setFont(new java.awt.Font("Gill Sans MT", 1, 16)); // NOI18N
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancelar.png"))); // NOI18N
+        btnSalir.setText("Salir");
+        btnSalir.setBorderPainted(false);
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setDefaultCapable(false);
+        btnSalir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelDispositivo)
+                                    .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(256, 256, 256))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(btnSalir)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnLogin)))))))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleParent(this);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -258,23 +221,14 @@ public class Principal extends javax.swing.JFrame{
         if (us.ExisteUsuario()) {
             JOptionPane.showMessageDialog(null, "Bienvenido " + us.getNombre());
             
-            try {
-                try {
-                    String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
-                    String seleccion = ListaDispositivos.getSelectedItem().toString();
-                    this.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(),seleccion, "S-Correcto");
-                    Reestablecer();
-                    Menu m1 = new Menu();
-                    m1.show();
-                   
-                } catch (IOException ex) {
-                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (JSchException ex) {
-                System.out.println(ex.getMessage());
-            } catch (IllegalAccessException ex) {
-                System.out.println(ex.getMessage());
-            }
+            //String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
+            String seleccion = ListaDispositivos.getSelectedItem().toString();
+            this.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(),seleccion, "S-Correcto");
+            variablesGlobales.USUARIO_ACTIVO = us.getNombre();
+            variablesGlobales.DISPOSITIVO_ACTIVO = seleccion;
+            Reestablecer();
+            Menu m1 = new Menu();
+            m1.show();
         } else if( Conectar.IsServerCaido){
             JOptionPane.showMessageDialog(null, "SERVIDOR CAIDO !!!",
             "Error",JOptionPane.ERROR_MESSAGE);
@@ -285,6 +239,10 @@ public class Principal extends javax.swing.JFrame{
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
     private boolean IngresoValido(){
          if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && ListaDispositivos.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Ingrese Usuario, Contraseña Y seleccione Dispositivo");
@@ -326,22 +284,27 @@ public class Principal extends javax.swing.JFrame{
                 +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"','');");
     }
     
-    private void llenarTablaEncendidos(){
-        if(!exiteFila(h2.getListaDispositivo().getFirst())){
-            DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
-            modelo.addRow(new Object[]{h2.getListaDispositivo().getFirst(),h1.getEstado()});
+    private void llenarTablaEncendidos() {
+        for (Dispositivo dispo : h2.getListaDispositivo()) {
+            if (!exiteFila(dispo.getNombre()) && dispo.getNombre().length()!=0) {
+                DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
+                modelo.addRow(new Object[]{dispo.getNombre(), dispo.getEstado()});
+                System.out.println(dispo);
+            }
+            else if(exiteFila(dispo.getNombre()) && dispo.getNombre().length()!=0 ){
+                reemplazarFila(dispo);
+            }
         }
+
     }
-        
+
     private void iniciarHilos(){
-        this.h1 = new HiloDispositivoEncendido("192.168.1.1");
         this.h2 = new HiloNombreDispositivo();
-        this.h1.start();
         this.h2.start();
     }
     
     private void actualizarTabla() {
-        Timer timer = new Timer(1000, (ActionEvent e) -> {
+        Timer timer = new Timer(2, (ActionEvent e) -> {
             if(!this.h2.getListaDispositivo().isEmpty())
              llenarTablaEncendidos();
         });
@@ -351,6 +314,9 @@ public class Principal extends javax.swing.JFrame{
         if(dato==null){
             return false;
         }
+        if(dato.length() == 0){
+            return false;
+        }
         for (int i = 0; i < estadoDispositivo.getRowCount(); i++) {
             String valor  = estadoDispositivo.getValueAt(i, 0).toString().trim();
             if(valor.equals(dato)){
@@ -358,6 +324,23 @@ public class Principal extends javax.swing.JFrame{
             }
         }
         return false;
+    }
+    
+    private void reemplazarFila(Dispositivo dato){
+        if(dato==null){
+            return ;
+        }
+        if(dato.getNombre().length() == 0){
+            return ;
+        }
+        for (int i = 0; i < estadoDispositivo.getRowCount(); i++) {
+            String valor  = estadoDispositivo.getValueAt(i, 0).toString().trim();
+            if(valor.equals(dato.getNombre())){
+                estadoDispositivo.setValueAt(dato.getEstado(),i,1);
+                
+            }
+        }
+        
     }
 
     /**
@@ -398,12 +381,10 @@ public class Principal extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ListaDispositivos;
     private javax.swing.JButton btnLogin;
-    private org.edisoncor.gui.panel.PanelTranslucido contenedorLogin;
-    private org.edisoncor.gui.panel.Panel contenedorVentana;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JTable estadoDispositivo;
     private javax.swing.JLabel imgLogin;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelContra;

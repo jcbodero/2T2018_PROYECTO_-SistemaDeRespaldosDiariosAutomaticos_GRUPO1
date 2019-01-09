@@ -14,8 +14,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
-import javax.swing.JOptionPane;
  
 /**
  * Clase encargada de establecer conexión y ejecutar comandos SSH.
@@ -120,6 +118,20 @@ public class SSH {
         this.session.disconnect();
     }
     
+    /**
+     * Funcion que realiza la conexion, desconexion y ejecuta comandos en los dispositivos 
+     * mediante conexion SSH
+     *@author Julio Bodero
+     * @param User
+     * @param Pass
+     * @param DirIp
+     * @param port
+     * @param Comamnd
+     * @return
+     * @throws JSchException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
     public static String ConectarSSh(String User, String Pass, String DirIp, int port, String Comamnd) throws JSchException, IllegalAccessException, IOException {
         try {
             SSH sshConnector = new SSH();

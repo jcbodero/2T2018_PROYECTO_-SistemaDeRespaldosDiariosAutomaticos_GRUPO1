@@ -11,8 +11,7 @@ import Modelo.Fecha;
 import Modelo.variablesGlobales;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,7 +38,7 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        btnCrearRespaldos = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -50,10 +49,10 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Crear Respaldo Configuracion");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearRespaldos.setText("Crear Respaldo Configuracion");
+        btnCrearRespaldos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCrearRespaldosActionPerformed(evt);
             }
         });
 
@@ -124,7 +123,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -133,7 +132,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(255, Short.MAX_VALUE))
@@ -146,16 +145,31 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /** */
+    private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
-            String resultado = SSH.ConectarSSh("admin", "admin", "192.168.1.1", 22, "show run");
+            String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
             System.out.println(resultado);
-            Archivos.escribirDatos(resultado, "src/DocumentosGenerados/prueba.cfg");
+            if(Encendido()){
+                String nombre = variablesGlobales.DISPOSITIVO_ACTIVO+"-"+(new Fecha()).imprimirFechasinHora();
+                Archivos.escribirDatos(resultado, "src/DocumentosGenerados/"+nombre+".cfg", false);
+                Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
+                        variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre+".cfg");
+            }else{
+                Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
+            }
+           
         } catch (JSchException | IllegalAccessException | IOException ex) {
-            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Falla de conexión con el servidor" + ex.getMessage(),
+            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
+            
+            Archivos.escribirDatos(variablesGlobales.USUARIO_ACTIVO+";"+
+                        "Error Conexion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }//GEN-LAST:event_btnCrearRespaldosActionPerformed
+    private Boolean Encendido(){
+        return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
+    }
     /**
      * @param args the command line arguments
      */
@@ -185,6 +199,7 @@ public class Menu extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Menu().setVisible(true);
             }
@@ -192,7 +207,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCrearRespaldos;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

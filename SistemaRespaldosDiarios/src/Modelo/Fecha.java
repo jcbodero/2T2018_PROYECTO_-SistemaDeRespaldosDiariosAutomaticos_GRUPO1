@@ -102,4 +102,9 @@ public class Fecha { //declaracion de clase Fecha
         formato = this.dia + "_" + this.mes + "_" + this.anio+" "+this.hora+":"+this.minutos;
         return formato;
     }
+    public String imprimirFechasinHora() {
+        String formato;
+        formato = this.dia + "_" + this.mes + "_" + this.anio;
+        return formato;
+    }
 }

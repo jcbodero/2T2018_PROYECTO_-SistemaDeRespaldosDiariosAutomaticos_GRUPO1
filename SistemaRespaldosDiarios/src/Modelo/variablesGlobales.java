@@ -10,7 +10,24 @@ package Modelo;
  * @author JULIO
  */
 public class variablesGlobales {
+
+    /**
+     *
+     */
     public static String USUARIO_ACTIVO;
+
+    /**
+     *
+     */
     public static String DISPOSITIVO_ACTIVO;
-    public static String DIRECCIONIP;
+
+    /**
+     *
+     */
+    public static String DISPOSITIVO_DIRECCIONIP;
+
+    /**
+     *
+     */
+    public static String DISPOSITIVO_ESTADO;
 }

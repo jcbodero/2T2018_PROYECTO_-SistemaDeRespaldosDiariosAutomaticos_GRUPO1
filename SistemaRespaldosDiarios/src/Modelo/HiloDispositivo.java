@@ -17,10 +17,14 @@ import java.util.logging.Logger;
  *
  * @author JULIO
  */
-public class HiloNombreDispositivo extends Thread{
+public class HiloDispositivo extends Thread{
     private LinkedList<Dispositivo> listaDispositivo;
     private LinkedList<String> direccionesIp;
-    public HiloNombreDispositivo() {
+
+    /**
+     *
+     */
+    public HiloDispositivo() {
         this.listaDispositivo = new LinkedList<>();
         this.direccionesIp = new LinkedList<>();
         this.direccionesIp.add("192.168.1.1");
@@ -54,15 +58,24 @@ public class HiloNombreDispositivo extends Thread{
                 }
 
             } catch (JSchException | IllegalAccessException | IOException ex) {
-                Logger.getLogger(HiloNombreDispositivo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(HiloDispositivo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public LinkedList<Dispositivo> getListaDispositivo() {
         return listaDispositivo;
     }
     
+    /**
+     *
+     * @param resultado
+     * @return
+     */
     public Boolean containsResultado(String resultado){
         for (Dispositivo dispositivo : listaDispositivo) {
             if(dispositivo.getNombre().equals(resultado)){

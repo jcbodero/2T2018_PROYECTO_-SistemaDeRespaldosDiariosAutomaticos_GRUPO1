@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
+/**
+ *Clase que realiza la conexion y las transacciones en la base de datos
+ * @author JULIO
+ */
 public class Conectar {
     
     static Connection contacto = null;
@@ -16,6 +20,11 @@ public class Conectar {
     private static String password = "estudiante";
     public static  boolean IsServerCaido = false;
     
+    /**
+     *Funcion que realiza la conexion a la base de datos y verifica que no este caido el servidor
+     * @author Julio Bodero
+     * @return
+     */
     public static Connection getConexion(){
        
         //String url = "jdbc:sqlserver://DESKTOP-CHRINL5:1433;databaseName=RespaldosDiarios";
@@ -37,7 +46,13 @@ public class Conectar {
         return contacto;
     }
     
-
+    /**
+     * Funcion que consulta a la base de datos ingresando una consulta, 
+     * retorna un arreglo con la respuesta a la consulta.  
+     *@author Julio Bodero
+     * @param consulta
+     * @return
+     */
     public static ResultSet Consulta(String consulta){
         Connection con = getConexion();
         Statement declara;
@@ -50,6 +65,11 @@ public class Conectar {
         }
         return null;
     }
+
+    /**
+     *Funcion que ejecuta transacciones de UPDATE o INSERT 
+     * @param Sql
+     */
     public static void ejecutarTransaccion(String Sql){
        Connection pConectar= getConexion();
        CallableStatement statement = null;

@@ -19,7 +19,11 @@ public class Usuario {
     private String Nombre;
     private boolean Existe;
     
-
+    /**
+     *
+     * @param Usuario
+     * @param Contra
+     */
     public Usuario(String Usuario, String Contra) {
         try {
             llamarUsuarioDataBase(Usuario, Contra);
@@ -29,14 +33,26 @@ public class Usuario {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getUsuario() {
         return Usuario;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombre() {
         return Nombre;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean ExisteUsuario() {
         return Existe;
     }

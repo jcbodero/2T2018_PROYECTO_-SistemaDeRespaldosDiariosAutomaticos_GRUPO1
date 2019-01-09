@@ -7,19 +7,12 @@ package Vista;
 
 import Controlador.Archivos;
 import Controlador.Conectar;
-import Controlador.SSH;
 import Modelo.Dispositivo;
 import Modelo.Fecha;
-import Modelo.HiloDispositivoEncendido;
-import Modelo.HiloNombreDispositivo;
+import Modelo.HiloDispositivo;
 import Modelo.Usuario;
 import Modelo.variablesGlobales;
-import com.jcraft.jsch.JSchException;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -31,16 +24,25 @@ import javax.swing.table.DefaultTableModel;
  * @author 
  * @version:5/8/2018
  */
+
+/**
+ *
+ * @author JULIO
+ */
+
 public class Principal extends javax.swing.JFrame{
     
-    private LinkedList<HiloDispositivoEncendido> listaHilos;
-    private HiloNombreDispositivo h2;
-    
+    private HiloDispositivo h2;
+
+    /**
+     *
+     */
     public Principal(){
         initComponents();
         iniciarHilos();
         this.setLocationRelativeTo(null);
         actualizarTabla();
+       
     }
 
     /**
@@ -62,7 +64,6 @@ public class Principal extends javax.swing.JFrame{
         txtUsuario = new org.edisoncor.gui.textField.TextField();
         labelContra = new javax.swing.JLabel();
         labelDispositivo = new javax.swing.JLabel();
-        ListaDispositivos = new javax.swing.JComboBox<>();
         btnLogin = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
 
@@ -101,9 +102,6 @@ public class Principal extends javax.swing.JFrame{
 
         labelDispositivo.setFont(new java.awt.Font("Lucida Bright", 1, 18)); // NOI18N
         labelDispositivo.setText("DISPOSITIVOS");
-
-        ListaDispositivos.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 14)); // NOI18N
-        ListaDispositivos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "[Seleccione Dispositivo]", "SW-GYE", "ROU-GYE", "ROU-UIO" }));
 
         btnLogin.setBackground(new java.awt.Color(204, 204, 255));
         btnLogin.setFont(new java.awt.Font("Gill Sans MT", 1, 16)); // NOI18N
@@ -146,66 +144,63 @@ public class Principal extends javax.swing.JFrame{
                                 .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelDispositivo)
-                                    .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(256, 256, 256))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(btnSalir)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(btnLogin)))))))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(330, 330, 330))))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(214, 214, 214)
+                        .addComponent(btnSalir)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnLogin)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(labelDispositivo)
+                        .addGap(71, 71, 71))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
+                .addComponent(imgLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ListaDispositivos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(labelContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(80, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(124, 124, 124))
         );
 
         getAccessibleContext().setAccessibleParent(this);
@@ -222,11 +217,16 @@ public class Principal extends javax.swing.JFrame{
             JOptionPane.showMessageDialog(null, "Bienvenido " + us.getNombre());
             
             //String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
-            String seleccion = ListaDispositivos.getSelectedItem().toString();
-            this.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(),seleccion, "S-Correcto");
+            
+            String seleccion = estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 0).toString().trim();
+            Archivos.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(),seleccion, "S-Correcto");
             variablesGlobales.USUARIO_ACTIVO = us.getNombre();
             variablesGlobales.DISPOSITIVO_ACTIVO = seleccion;
+            variablesGlobales.DISPOSITIVO_DIRECCIONIP = buscarIPDispositivo(seleccion);
+            variablesGlobales.DISPOSITIVO_ESTADO = estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 1).toString().trim();
+            System.out.println(variablesGlobales.DISPOSITIVO_ESTADO);
             Reestablecer();
+            h2.stop();
             Menu m1 = new Menu();
             m1.show();
         } else if( Conectar.IsServerCaido){
@@ -235,6 +235,8 @@ public class Principal extends javax.swing.JFrame{
             Reestablecer();
         }else{
             JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
+            Archivos.escribirDatos(txtUsuario.getText()+";"+estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 0).toString().trim()+";"+
+                        "Ingreso Fallido"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
             Reestablecer();
         }
 
@@ -244,15 +246,8 @@ public class Principal extends javax.swing.JFrame{
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
     private boolean IngresoValido(){
-         if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && ListaDispositivos.getSelectedIndex() == 0) {
+         if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 &&  estadoDispositivo.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Ingrese Usuario, Contraseña Y seleccione Dispositivo");
-              Archivos.escribirDatos(txtUsuario.getText()+";"+ListaDispositivos.getSelectedItem()+";"+
-                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs");
-              if(ListaDispositivos.getSelectedItem() == "ROU_GYE"){
-                  System.out.println("Igual");
-              }else{
-                  System.out.println("No igual");
-              }
             return false;
         } else {
             if (txtUsuario.getText().length() == 0) {
@@ -261,12 +256,14 @@ public class Principal extends javax.swing.JFrame{
             }
             if (txtContra.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese Contraseña");
+                Archivos.escribirDatos(txtUsuario.getText()+";"+
+                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
                 return false;
             }
-            if (ListaDispositivos.getSelectedIndex() == 0) {
+            if ( estadoDispositivo.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Seleccione Dispositivo");
-                 Archivos.escribirDatos(txtUsuario.getText()+";"+ListaDispositivos.getSelectedItem()+";"+
-                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs");
+                 Archivos.escribirDatos(txtUsuario.getText()+";"+
+                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
                 return false;
             }
         }
@@ -276,13 +273,10 @@ public class Principal extends javax.swing.JFrame{
     private void Reestablecer(){
         txtContra.setText(null);
         txtUsuario.setText(null);
-        ListaDispositivos.setSelectedIndex(0);
+        
     }
     
-    private void guardarHistorialEvento(String Usuario, String fecha, String Dispositivo, String Accion){
-        Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
-                +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"','');");
-    }
+   
     
     private void llenarTablaEncendidos() {
         for (Dispositivo dispo : h2.getListaDispositivo()) {
@@ -299,7 +293,7 @@ public class Principal extends javax.swing.JFrame{
     }
 
     private void iniciarHilos(){
-        this.h2 = new HiloNombreDispositivo();
+        this.h2 = new HiloDispositivo();
         this.h2.start();
     }
     
@@ -347,7 +341,7 @@ public class Principal extends javax.swing.JFrame{
      * @return  
      * @autor Eduardo Veintimilla
      */
-    public String separaString(String cadena){
+    private String separaString(String cadena){
         String lista[] = cadena.split(" ");
         for (int i = 0; i < lista.length ; i++) {
             lista[i] = lista[i].replace(" ", "");
@@ -355,9 +349,16 @@ public class Principal extends javax.swing.JFrame{
             
         }
         return lista[1];
-}
+    }
 
-
+    private String buscarIPDispositivo(String nombre){
+        for (Dispositivo dispositivo : h2.getListaDispositivo()) {
+            if(separaString(dispositivo.getNombre()).equals(nombre)){
+                return dispositivo.getDirip();
+            }
+        }
+        return"";
+    }
     /**
      * @param args the command line arguments
      */
@@ -394,7 +395,6 @@ public class Principal extends javax.swing.JFrame{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ListaDispositivos;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnSalir;
     private javax.swing.JTable estadoDispositivo;

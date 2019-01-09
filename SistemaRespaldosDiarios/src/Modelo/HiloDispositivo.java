@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *En esta clase al iniciar el hilo se obtendra el nombre de los dispositivos y sus estados. 
  * @author JULIO
  */
 public class HiloDispositivo extends Thread{
@@ -22,7 +22,7 @@ public class HiloDispositivo extends Thread{
     private LinkedList<String> direccionesIp;
 
     /**
-     *
+     *Constructor del hilo de un dispositivo, se inicializa la lista de direcciones ip y se almacena los dispositivos. 
      */
     public HiloDispositivo() {
         this.listaDispositivo = new LinkedList<>();
@@ -64,7 +64,7 @@ public class HiloDispositivo extends Thread{
     }
 
     /**
-     *
+     *Funcion que devuelve la lista de dispositivos creados en la ejecucion del hilo
      * @return
      */
     public LinkedList<Dispositivo> getListaDispositivo() {
@@ -72,7 +72,7 @@ public class HiloDispositivo extends Thread{
     }
     
     /**
-     *
+     *Funcion que verifica si la lista de dispositivos contiene el resultado de la consulta ssh 
      * @param resultado
      * @return
      */

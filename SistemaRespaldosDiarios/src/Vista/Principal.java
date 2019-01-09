@@ -245,6 +245,11 @@ public class Principal extends javax.swing.JFrame{
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
+    /**
+     *@author Julio Bodero
+     * Funcion que valida si el usuario ha ingresado en las cajas de texto su usuario, 
+     * contraseña y la seleccion de un dispositivo
+     */
     private boolean IngresoValido(){
          if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 &&  estadoDispositivo.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Ingrese Usuario, Contraseña Y seleccione Dispositivo");
@@ -270,6 +275,10 @@ public class Principal extends javax.swing.JFrame{
         
         return true;
     }
+    /** 
+     *@author Julio Bodero
+     * Funcion que pone en blanco los datos ingresados en las cajas de texto
+     */
     private void Reestablecer(){
         txtContra.setText(null);
         txtUsuario.setText(null);
@@ -277,7 +286,11 @@ public class Principal extends javax.swing.JFrame{
     }
     
    
-    
+    /**
+     *@author Julio Bodero
+     * Funcion que llena las columnas de la tabla donde 
+     * se encuentran el nombre de los dispositivos y su estado.
+     */
     private void llenarTablaEncendidos() {
         for (Dispositivo dispo : h2.getListaDispositivo()) {
             if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length()!=0) {
@@ -291,12 +304,19 @@ public class Principal extends javax.swing.JFrame{
         }
 
     }
-
+    /** 
+     * Funcion que inicializa e inicia los hilos del sistema
+     * @author Julio Bodero
+     */
     private void iniciarHilos(){
         this.h2 = new HiloDispositivo();
         this.h2.start();
     }
     
+    /** 
+     *@author Julio Bodero
+     * Funcion que verifica cada 2 milisegundos el estado de los dispositivos. 
+     */
     private void actualizarTabla() {
         Timer timer = new Timer(2, (ActionEvent e) -> {
             if(!this.h2.getListaDispositivo().isEmpty())
@@ -304,6 +324,11 @@ public class Principal extends javax.swing.JFrame{
         });
         timer.start();
     }
+    
+    /** 
+     Funcion que verifica si existe una fila con el dato ingresado
+     * @author Julio Bodero
+     */
     private Boolean exiteFila(String dato){
         if(dato==null){
             return false;
@@ -319,7 +344,10 @@ public class Principal extends javax.swing.JFrame{
         }
         return false;
     }
-    
+    /** 
+     *@author Julio Bodero
+     * Funcion busca un dispositivo en la tabla de dispositivo y  actualiza la fila del estado del dispositivo 
+     */
     private void reemplazarFila(Dispositivo dato){
         if(dato==null){
             return ;
@@ -337,6 +365,7 @@ public class Principal extends javax.swing.JFrame{
         
     }
     /**
+     * Funcion que separa la palabra hostname de una consulta ssh
      * @param cadena 
      * @return  
      * @autor Eduardo Veintimilla
@@ -351,6 +380,10 @@ public class Principal extends javax.swing.JFrame{
         return lista[1];
     }
 
+    /** 
+     *@author Julio Bodero
+     * Funcion que busca la direccion ip de un dispositivo
+     */
     private String buscarIPDispositivo(String nombre){
         for (Dispositivo dispositivo : h2.getListaDispositivo()) {
             if(separaString(dispositivo.getNombre()).equals(nombre)){

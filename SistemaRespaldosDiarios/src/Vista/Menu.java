@@ -145,7 +145,10 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /** */
+    /** 
+     *@author Julio Bodero
+     * Accion del Boton crearRespaldo se genera un archivo de configuracion si el disposotivo no se encuentra apagado. 
+     */
     private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
             String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
@@ -167,6 +170,10 @@ public class Menu extends javax.swing.JFrame {
                         "Error Conexion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
         }
     }//GEN-LAST:event_btnCrearRespaldosActionPerformed
+    /** 
+     *@author Julio Bodero
+     * Funcion que valida si el dispositivo esta encendido
+     */
     private Boolean Encendido(){
         return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
     }

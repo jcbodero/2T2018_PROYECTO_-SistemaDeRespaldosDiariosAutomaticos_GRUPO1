@@ -20,7 +20,7 @@ public class Usuario {
     private boolean Existe;
     
     /**
-     *
+     *Constructor de un usuario basico administrado del sistema
      * @param Usuario
      * @param Contra
      */
@@ -34,7 +34,7 @@ public class Usuario {
     }
 
     /**
-     *
+     *Funcion que devuelve el nombre de usuario del administrador 
      * @return
      */
     public String getUsuario() {
@@ -42,7 +42,7 @@ public class Usuario {
     }
 
     /**
-     *
+     *Funcion que devuelve el nombre del usuario 
      * @return
      */
     public String getNombre() {
@@ -50,7 +50,7 @@ public class Usuario {
     }
 
     /**
-     *
+     *Funcion que retorna verdadero si el usuario existe
      * @return
      */
     public Boolean ExisteUsuario() {

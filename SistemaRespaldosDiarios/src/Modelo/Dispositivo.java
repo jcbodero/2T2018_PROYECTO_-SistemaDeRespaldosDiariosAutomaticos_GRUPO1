@@ -15,7 +15,8 @@ public class Dispositivo {
     private String estado = "Off";
 
     /**
-     *
+     * Constructor con los aributos basicos de un dispositivo de red
+     *@author Julio Bodero
      * @param dirip
      * @param nombre
      */
@@ -25,7 +26,7 @@ public class Dispositivo {
     }
 
     /**
-     *
+     *Se obtiene la direccion ip del dispositivo
      * @return
      */
     public String getDirip() {
@@ -33,7 +34,7 @@ public class Dispositivo {
     }
 
     /**
-     *
+     *Se obtiene el nombre del dispositivo
      * @return
      */
     public String getNombre() {
@@ -41,7 +42,7 @@ public class Dispositivo {
     }
 
     /**
-     *
+     *Se obtiene el estado del dispositivo por defecto se encuentra apagado
      * @return
      */
     public String getEstado() {
@@ -49,7 +50,7 @@ public class Dispositivo {
     }
 
     /**
-     *
+     *Funcion que cambia el estado segun el ping realizado al dispositivo
      * @param estado
      */
     public void setEstado(String estado) {

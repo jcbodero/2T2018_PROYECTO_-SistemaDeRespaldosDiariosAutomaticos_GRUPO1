@@ -142,7 +142,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        new consultaArchivo().show();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /** 
@@ -156,10 +156,18 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
             if(Encendido()){
                 String nombre = variablesGlobales.DISPOSITIVO_ACTIVO+"-"+(new Fecha()).imprimirFechasinHora();
                 Archivos.escribirDatos(resultado, "src/DocumentosGenerados/"+nombre+".cfg", false);
-                Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
+                try {
+                    Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
                         variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre+".cfg");
+                } catch (Exception e) {
+                }
+                
             }else{
-                Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
+                try {
+                    Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
+                } catch (Exception e) {
+                }
+                
             }
            
         } catch (JSchException | IllegalAccessException | IOException ex) {
@@ -177,6 +185,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     private Boolean Encendido(){
         return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
     }
+   
     /**
      * @param args the command line arguments
      */

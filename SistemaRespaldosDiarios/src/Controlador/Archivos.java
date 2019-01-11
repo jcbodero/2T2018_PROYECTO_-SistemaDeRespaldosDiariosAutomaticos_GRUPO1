@@ -69,8 +69,8 @@ public class Archivos {
      * @param Accion
      */
     public static void guardarHistorialEvento(String Usuario, String fecha, String Dispositivo, String Accion){
-        Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
-                +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"','');");
+        Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`) "
+                +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"');");
     }
 
     /**
@@ -83,7 +83,11 @@ public class Archivos {
      * @param NombreArchivo
      */
     public static void guardarHistorialEvento(String Usuario, String fecha, String Dispositivo, String Accion, String NombreArchivo){
-        Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
+        try {
+            Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
                 +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"','"+NombreArchivo+"');");
+        } catch (Exception e) {
+        }
+        
     }
 }

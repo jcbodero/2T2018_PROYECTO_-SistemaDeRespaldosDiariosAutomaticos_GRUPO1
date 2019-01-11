@@ -99,12 +99,22 @@ public class Fecha { //declaracion de clase Fecha
      */
     public String imprimirFecha() {
         String formato;
-        formato = this.dia + "_" + this.mes + "_" + this.anio+" "+this.hora+":"+this.minutos;
+        formato = this.anio + "-" + addCero(this.mes) + "-" + addCero(this.dia)+" "+this.hora+":"+this.minutos;
         return formato;
     }
     public String imprimirFechasinHora() {
         String formato;
-        formato = this.dia + "_" + this.mes + "_" + this.anio;
+        formato = addCero(this.dia) + "_" + addCero(this.mes) + "_" + this.anio;
         return formato;
     }
+    private String addCero(int numero){
+        if(numero>=10){
+            return String.valueOf(numero);
+        }
+        else{
+            return "0"+String.valueOf(numero);
+        }
+        
+    }
+    
 }

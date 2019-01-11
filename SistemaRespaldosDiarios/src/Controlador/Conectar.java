@@ -39,7 +39,7 @@ public class Conectar {
         }
         try{
             contacto = DriverManager.getConnection(url, Conectar.usuario, Conectar.password);
-        }catch (SQLException e){
+        }catch (Exception e){
              
              Conectar.IsServerCaido  =true;
         }
@@ -54,9 +54,10 @@ public class Conectar {
      * @return
      */
     public static ResultSet Consulta(String consulta){
-        Connection con = getConexion();
-        Statement declara;
+        
         try{
+            Connection con = getConexion();
+            Statement declara;
             declara=con.createStatement();
             ResultSet respuesta = declara.executeQuery(consulta);
             return respuesta;
@@ -76,12 +77,9 @@ public class Conectar {
        
        try {
             statement = pConectar.prepareCall(Sql);
-            try {
-                 statement.execute();
-            } catch (SQLException e) {
-                 e.printStackTrace();
-            }
-          } catch (SQLException e){
+            statement.execute();
+            
+          } catch (Exception e){
              e.printStackTrace();
         }
     }

@@ -99,9 +99,9 @@ public class consultaArchivo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(99, 99, 99)
+                                .addGap(95, 95, 95)
                                 .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(80, 80, 80)
+                                .addGap(84, 84, 84)
                                 .addComponent(btnDescargar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(39, 39, 39)
@@ -169,6 +169,7 @@ public class consultaArchivo extends javax.swing.JFrame {
 
             if (comboMes.getSelectedIndex() != 0 && comboDia.getSelectedIndex() != 0 && comboYear.getSelectedIndex() != 0) {
                 if (isFuturo(comboYear.getSelectedItem() + "-" + comboMes.getSelectedItem() + "-" + comboDia.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(null, "No Existen archivos de respaldos de fecha futuras: ");
                     return;
                 }
                 if (isAnticipado(comboYear.getSelectedItem() + "-" + comboMes.getSelectedItem() + "-" + comboDia.getSelectedItem())) {
@@ -196,6 +197,7 @@ public class consultaArchivo extends javax.swing.JFrame {
             }
             if (comboMes.getSelectedIndex() != 0 && comboDia.getSelectedIndex() != 0 && comboYear.getSelectedIndex() != 0) {
                 if (isFuturo(comboYear.getSelectedItem() + "-" + comboMes.getSelectedItem() + "-" + comboDia.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(null, "No Existen archivos de respaldos de fecha futuras: ");
                     return;
                 }
                 if (isAnticipado(comboYear.getSelectedItem() + "-" + comboMes.getSelectedItem() + "-" + comboDia.getSelectedItem())) {
@@ -281,10 +283,10 @@ public class consultaArchivo extends javax.swing.JFrame {
         String sql = "";
         if (seleccion == 1){
             sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year
-                + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
+                + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%' and NombreArchivoRespaldo is not null;";
         }
         if(seleccion == 2){
-            sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year+";";
+            sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year+" and NombreArchivoRespaldo is not null;";
         }
         ResultSet res = Conectar.Consulta(sql);
         try {
@@ -304,9 +306,9 @@ public class consultaArchivo extends javax.swing.JFrame {
     }
 
     private void consultaFechaYNombre(String dia, String mes, String year) {
-        String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + year + "' and "
+        String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + "' and "
                 + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'"
-                + "and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
+                + "and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%' and NombreArchivoRespaldo is not null;";
         ResultSet res = Conectar.Consulta(sql);
         try {
             try {
@@ -325,8 +327,8 @@ public class consultaArchivo extends javax.swing.JFrame {
     }
 
     private void consultaFecha(String dia, String mes, String year) {
-        String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + year + "' and "
-                + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'"+";";
+        String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + "' and "
+                + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'"+" and NombreArchivoRespaldo is not null;";
         ResultSet res = Conectar.Consulta(sql);
         try {
             try {

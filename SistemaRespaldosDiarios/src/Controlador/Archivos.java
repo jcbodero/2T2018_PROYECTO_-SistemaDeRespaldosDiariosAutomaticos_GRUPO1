@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import com.mysql.jdbc.CommunicationsException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -83,11 +84,8 @@ public class Archivos {
      * @param NombreArchivo
      */
     public static void guardarHistorialEvento(String Usuario, String fecha, String Dispositivo, String Accion, String NombreArchivo){
-        try {
-            Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
+        Conectar.ejecutarTransaccion("INSERT INTO `Evento`(`Administrador`, `Dispositivo`, `Accion`, `Fecha`, `NombreArchivoRespaldo`) "
                 +"VALUES ('"+Usuario+"',(SELECT `Serie`FROM `Dispositivo` WHERE NombreDispositivo='"+Dispositivo+"'),'"+Accion+"','"+fecha+"','"+NombreArchivo+"');");
-        } catch (Exception e) {
-        }
         
     }
 }

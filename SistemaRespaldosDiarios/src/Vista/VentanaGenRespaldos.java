@@ -6,6 +6,7 @@
 package Vista;
 
 import Controlador.Archivos;
+import Controlador.Conectar;
 import Controlador.SSH;
 import Modelo.Fecha;
 import Modelo.variablesGlobales;
@@ -151,18 +152,19 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
      */
     private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
-            String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
-            System.out.println(resultado);
-            if(Encendido()){
-                String nombre = variablesGlobales.DISPOSITIVO_ACTIVO+"-"+(new Fecha()).imprimirFechasinHora();
-                Archivos.escribirDatos(resultado, "src/DocumentosGenerados/"+nombre+".cfg", false);
+            
+            if (Encendido() && !Conectar.IsServerCaido) {
+                String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
+                System.out.println(resultado);
+                String nombre = variablesGlobales.DISPOSITIVO_ACTIVO + "-" + (new Fecha()).imprimirFechasinHora();
+                Archivos.escribirDatos(resultado, "src/DocumentosGenerados/" + nombre + ".cfg", false);
                 try {
                     Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
-                        variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre+".cfg");
+                            variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre + ".cfg");
                 } catch (Exception e) {
                 }
-                
-            }else{
+
+            } else {
                 try {
                     Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
                 } catch (Exception e) {

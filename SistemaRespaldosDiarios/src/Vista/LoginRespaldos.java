@@ -227,8 +227,12 @@ public class LoginRespaldos extends javax.swing.JFrame{
             System.out.println(variablesGlobales.DISPOSITIVO_ESTADO);
             Reestablecer();
             h2.stop();
-            VentanaGenRespaldos m1 = new VentanaGenRespaldos();
-            m1.show();
+            try {
+                VentanaGenRespaldos m1 = new VentanaGenRespaldos();
+                m1.show();
+            } catch (Exception e) {
+            }
+            
         } else if( Conectar.IsServerCaido){
             JOptionPane.showMessageDialog(null, "SERVIDOR CAIDO !!!",
             "Error",JOptionPane.ERROR_MESSAGE);

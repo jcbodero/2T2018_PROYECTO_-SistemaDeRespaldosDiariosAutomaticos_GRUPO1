@@ -1,0 +1,5 @@
+ hostnamectl set-hostname SERVERDATABASE
+nano /etc/hosts
+#
+
+show run | include hostname

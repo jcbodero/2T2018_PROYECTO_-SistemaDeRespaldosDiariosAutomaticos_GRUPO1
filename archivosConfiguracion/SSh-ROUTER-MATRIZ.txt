@@ -1,0 +1,15 @@
+conf t
+ip domain-name router.matriz
+crypto key generate rsa 
+1024
+
+ip ssh time-out 30
+ip ssh authentication-retries 3
+ip ssh version 2
+username admin privilege 15 password  admin
+line vty 0 4
+transport input ssh
+login local
+end
+write memory
+

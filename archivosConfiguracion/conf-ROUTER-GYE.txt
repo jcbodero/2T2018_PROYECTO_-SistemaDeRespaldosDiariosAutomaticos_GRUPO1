@@ -1,0 +1,18 @@
+conf t
+router ospf 1
+network 192.168.1.0 0.0.0.255 area 0
+network 10.3.3.0 0.0.0.3 area 0
+network 10.1.1.0 0.0.0.3 area 0
+exit
+int f0/0 
+ip address 192.168.1.1 255.255.255.0
+no shut
+int s1/1
+ip address 10.3.3.1 255.255.255.252
+no shut
+int s1/0
+ip address 10.1.1.1 255.255.255.252
+no shut
+end
+write memory 
+

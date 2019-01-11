@@ -1,0 +1,60 @@
+sudo yum install wget
+sudo yum install net-tools
+sudo yum update
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+rpm -ivh mysql-community-release-el7-5.noarch.rpm
+yum install -y mysql-community-server
+systemctl start mysqld
+mysql –u root -p
+
+CREATE USER 'estudiante'@'localhost' IDENTIFIED BY 'estudiante';
+GRANT ALL PRIVILEGES ON *.* TO 'estudiante'@'localhost';
+FLUSH PRIVILEGES;
+exit
+
+yum install httpd mysql-server php php-mysql
+service httpd start
+yum install epel-release
+yum install phpmyadmin
+service httpd restart
+yum install nano
+nano /etc/httpd/conf.d/phpMyAdmin.conf
+
+#¨¨Cambiar 127.0.0.1 requiered and allow por nuestra ip del servidor u otra ip que desea acceder a centos ¨
+
+sudo systemctl restart httpd.service
+mysql_secure_installation
+
+#Enter
+Establecer la contraseña del superusuario root. y
+#"Ingresar Nueva contraseña root1234"
+#Eliminar el usuario anónimo (anonymous). y
+#Desactivar el login remoto del usuario root, recomendable por seguridad. n
+#Eliminar base de datos "test", si existe. n
+#Recargar los privilegios de las tablas. y
+
+firewall-cmd --permanent --zone=public --add-service=mysql
+firewall-cmd --permanent --zone=public --add-service=http
+systemctl restart firewalld.service
+
+mysql -u root -p
+grant all on *.* to root@'%' identified by 'root1234' ;
+flush privileges;
+quit
+
+grant all on *.* to estudiante@'%' identified by 'estudiante' ;
+flush privileges;
+quit
+
+http://Ipserver/phpmyadmin
+
+
+
+
+
+#http://www.ajpdsoft.com/modules.php?name=News&file=article&sid=702#instalarmysqlserverlinuxcentos7
+#https://www.youtube.com/watch?v=65u83mrZh-I
+
+## RHEL/CentOS 7 64-Bit ##
+# wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# rpm -ivh epel-release-latest-7.noarch.rpm

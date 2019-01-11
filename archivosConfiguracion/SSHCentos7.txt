@@ -1,0 +1,6 @@
+yum install openssh openssh-server openssh-clients openssl-libs
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
+nano /etc/ssh/sshd_config
+#Port 22 cambiar Port 2022 //recomendado por seguridad
+#systemctl restart sshd.service
+#

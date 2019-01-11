@@ -1,0 +1,49 @@
+yum -y install samba samba-client samba-common
+systemctl enable smb
+firewall-cmd –permanent –zone=public –add-service=samba
+systemctl restart firewalld
+setsebool -P samba_export_all_ro=1
+
+setsebool -P samba_export_all_rw=1
+
+setsebool -P samba_enable_home_dirs=1
+
+setsebool -P samba_portmapper=1
+
+setsebool -P samba_share_fusefs=1
+
+setsebool -P samba_share_nfs=1
+
+setsebool -P sanlock_use_samba=1
+
+setsebool -P samba_create_home_dirs 1
+
+setsebool -P samba_run_unconfined=1
+
+setsebool -P virt_use_samba 1
+
+setsebool -P samba_create_home_dirs 1
+
+setsebool -P allow_smbd_anon_write 1
+
+groupadd Conmutacion
+
+useradd -g Conmutacion -s /sbin/nologin julioadmin
+
+smbpasswd -a julioadmin
+
+nano /etc/samba/smb.conf
+
+[{nombredirectorio}]
+
+     comment = {directorio compartido con samba}
+path = {/directorio/compartido}
+valid users = {usuario usuarioOtro usuarioOtroOtro}
+public = no
+writable = yes
+
+systemctl restart smb
+
+#Acceder con \\192.168.x.x direccion server
+
+#https://videlcloud.wordpress.com/2017/05/07/como-crear-una-carpeta-compartida-en-centos-o-fedora-mediante-comandos/

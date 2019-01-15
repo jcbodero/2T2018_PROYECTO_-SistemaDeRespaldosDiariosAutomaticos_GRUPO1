@@ -42,13 +42,11 @@
                               <Component id="labelContra" min="-2" pref="130" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtContra" min="-2" pref="217" max="-2" attributes="0"/>
-                                  <Component id="txtUsuario" min="-2" pref="455" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtContra" min="-2" pref="217" max="-2" attributes="0"/>
+                              <Component id="txtUsuario" min="-2" pref="455" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="imgLogin" min="-2" pref="96" max="-2" attributes="0"/>

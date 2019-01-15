@@ -11,8 +11,13 @@ import Controlador.SSH;
 import Modelo.Fecha;
 import Modelo.variablesGlobales;
 import com.jcraft.jsch.JSchException;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  *
@@ -27,7 +32,9 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.txtUsuarioActivo.setText(variablesGlobales.USUARIO_ACTIVO);
-        this.txtDispositivoActivo.setText(variablesGlobales.DISPOSITIVO_ACTIVO);
+        LLenarLista();
+        this.txtDispositivoActivo.setSelectedItem(variablesGlobales.DISPOSITIVO_ACTIVO);
+        actualizarVariable();
     }
 
     /**
@@ -44,11 +51,14 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtUsuarioActivo = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtDispositivoActivo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        txtDispositivoActivo = new javax.swing.JComboBox<>();
+        btnCambiar = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         btnCrearRespaldos.setText("Crear Respaldo Configuracion");
         btnCrearRespaldos.addActionListener(new java.awt.event.ActionListener() {
@@ -69,16 +79,24 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
 
         txtUsuarioActivo.setEnabled(false);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 0, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Cambiar");
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Dispositivo Seleccionado");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         txtDispositivoActivo.setEnabled(false);
 
-        jLabel3.setText("Dispositivo Seleccionado");
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCambiar.setText("Cambiar");
+        btnCambiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarActionPerformed(evt);
+            }
+        });
+
+        btnCerrarSesion.setText("Logout");
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,14 +106,16 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtUsuarioActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(txtUsuarioActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtDispositivoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addComponent(txtDispositivoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCambiar)
+                .addGap(18, 18, 18)
+                .addComponent(btnCerrarSesion)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,9 +124,10 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUsuarioActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDispositivoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDispositivoActivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCambiar)
+                    .addComponent(btnCerrarSesion))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -124,7 +145,9 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(160, 160, 160)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -136,7 +159,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                 .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
 
         pack();
@@ -156,7 +179,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
             if (Encendido() && !Conectar.IsServerCaido) {
                 String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
                 System.out.println(resultado);
-                String nombre = variablesGlobales.DISPOSITIVO_ACTIVO + "-" + (new Fecha()).imprimirFechasinHora();
+                String nombre = variablesGlobales.DISPOSITIVO_ACTIVO + "-" + (new Fecha()).imprimirFechaConHoraySeg();
                 Archivos.escribirDatos(resultado, "src/DocumentosGenerados/" + nombre + ".cfg", false);
                 try {
                     Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
@@ -180,6 +203,46 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                         "Error Conexion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
         }
     }//GEN-LAST:event_btnCrearRespaldosActionPerformed
+
+    private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
+        this.txtDispositivoActivo.enable(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCambiarActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        this.setVisible(false);
+        new LoginRespaldos().show();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+    private void actualizarVariable() {
+        Timer timer = new Timer(1, (ActionEvent e) -> {
+            variablesGlobales.DISPOSITIVO_ACTIVO = this.txtDispositivoActivo.getSelectedItem().toString();
+        });
+        timer.start();
+    }
+    private int getMaxArchivo(String ruta, String nombre) {
+        LinkedList<Integer> max = new LinkedList<>();
+        File carpeta = new File(ruta);
+        File[] archivos;
+        if (carpeta.exists()) {
+            if (carpeta.isDirectory()) {
+                archivos = carpeta.listFiles();
+                for (int i = 0; i < archivos.length; i++) {
+                    if (archivos[i].getName().split(".")[0].equals(nombre)) {
+                        System.out.println(archivos[i].getName());
+                        String[] linea = archivos[i].getName().split(".");
+                        max.add(Integer.parseInt(linea[0]));
+                    }
+                }
+            }
+        }
+        int maximo = 0;
+        for (int i = 0; i < max.size(); i++) {
+            if (max.get(i) > maximo) {
+                maximo = max.get(i);
+            }
+        }
+        return maximo;
+    }
     /** 
      *@author Julio Bodero
      * Funcion que valida si el dispositivo esta encendido
@@ -187,7 +250,11 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     private Boolean Encendido(){
         return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
     }
-   
+    private void LLenarLista(){
+        for (String dispositivo : variablesGlobales.dispositivos) {
+            this.txtDispositivoActivo.addItem(dispositivo);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -226,13 +293,14 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCambiar;
+    private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCrearRespaldos;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtDispositivoActivo;
+    private javax.swing.JComboBox<String> txtDispositivoActivo;
     private javax.swing.JTextField txtUsuarioActivo;
     // End of variables declaration//GEN-END:variables
 }

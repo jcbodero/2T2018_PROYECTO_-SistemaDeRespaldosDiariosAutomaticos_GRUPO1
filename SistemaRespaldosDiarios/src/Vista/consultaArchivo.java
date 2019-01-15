@@ -9,6 +9,12 @@ import Controlador.Conectar;
 import Modelo.Fecha;
 import Modelo.variablesGlobales;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -33,6 +39,7 @@ public class consultaArchivo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         actualizarTabla();
+        this.setLocation(600, 200);
     }
 
     /**
@@ -56,6 +63,8 @@ public class consultaArchivo extends javax.swing.JFrame {
         radioFecha = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Busqueda Archivo");
@@ -154,7 +163,7 @@ public class consultaArchivo extends javax.swing.JFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
        // --select NombreArchivoRespaldo from Evento where year(Fecha)='2019' and NombreArchivoRespaldo like '%ROUTER%' and Fecha >='2019-01-10 18:40:00.000000';
         //select Min(Fecha) from Evento;
-       
+       this.contenedorArchivos.removeAll();
         if (radioNombre.isSelected() && radioFecha.isSelected()) {
             
             if (comboMes.getSelectedIndex() != 0 && comboDia.getSelectedIndex() == 0 && comboYear.getSelectedIndex() == 0) {
@@ -208,7 +217,7 @@ public class consultaArchivo extends javax.swing.JFrame {
                         comboYear.getSelectedItem().toString());
             }
             if (comboMes.getSelectedIndex() == 0 && comboDia.getSelectedIndex() == 0 && comboYear.getSelectedIndex() == 0) {
-                consultaAll();
+                consultaPorNombre();
             }
         }
         if(radioNombre.isSelected() && !radioFecha.isSelected()){
@@ -224,7 +233,8 @@ public class consultaArchivo extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarActionPerformed
-        // TODO add your handling code here:
+       this.descargar(contenedorArchivos.getSelectedItem());
+       JOptionPane.showMessageDialog(null, "Archivo Descargado..............");
     }//GEN-LAST:event_btnDescargarActionPerformed
 
     private void consultaMes(String mes, int seleccion) {
@@ -450,6 +460,42 @@ public class consultaArchivo extends javax.swing.JFrame {
             
         });
         timer.start();
+    }
+    
+    /**
+    *@author Cesar Navas
+    */
+    private boolean copyFile(String fromFile, String toFile) {
+        File origin = new File(fromFile);
+        File destination = new File(toFile);
+        if (origin.exists()) {
+            try {
+                InputStream in = new FileInputStream(origin);
+                OutputStream out = new FileOutputStream(destination);
+                // We use a buffer for the copy (Usamos un buffer para la copia).
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+                return true;
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    private void descargar(String Archivo){
+        String fromFile = "C:\\Users\\JULIO\\Documents\\NetBeansProjects\\2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\src\\DocumentosGenerados\\"+Archivo;
+        String toFile = "C:\\Users\\JULIO\\Downloads\\"+Archivo;
+        boolean result = copyFile(fromFile, toFile);
+        System.out.println(result?
+            "Success! File copying (Éxito! Fichero copiado)":
+                "Error! Failed to copy the file (Error! No se ha podido copiar el fichero)");
     }
     /**
      * @param args the command line arguments

@@ -228,6 +228,7 @@ public class LoginRespaldos extends javax.swing.JFrame{
             Reestablecer();
             h2.stop();
             try {
+                this.setVisible(false);
                 VentanaGenRespaldos m1 = new VentanaGenRespaldos();
                 m1.show();
             } catch (Exception e) {
@@ -296,41 +297,49 @@ public class LoginRespaldos extends javax.swing.JFrame{
      * se encuentran el nombre de los dispositivos y su estado.
      */
     private void llenarTablaEncendidos() {
-        for (Dispositivo dispo : h2.getListaDispositivo()) {
-            if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length()!=0) {
-                DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
-                modelo.addRow(new Object[]{separaString(dispo.getNombre()), dispo.getEstado()});
-                System.out.println(dispo);
+        try {
+            for (Dispositivo dispo : h2.getListaDispositivo()) {
+                if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
+                    DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
+                    modelo.addRow(new Object[]{separaString(dispo.getNombre()), dispo.getEstado()});
+                    System.out.println(dispo);
+                    variablesGlobales.dispositivos.add(separaString(dispo.getNombre()));
+                } else if (exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
+                    reemplazarFila(dispo);
+                }
             }
-            else if(exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length()!=0 ){
-                reemplazarFila(dispo);
-            }
+        } catch (Exception e) {
         }
 
     }
-    /** 
+
+    /**
      * Funcion que inicializa e inicia los hilos del sistema
+     *
      * @author Julio Bodero
      */
-    private void iniciarHilos(){
+    private void iniciarHilos() {
         this.h2 = new HiloDispositivo();
         this.h2.start();
     }
-    
-    /** 
-     *@author Julio Bodero
-     * Funcion que verifica cada 2 milisegundos el estado de los dispositivos. 
+
+    /**
+     * @author Julio Bodero Funcion que verifica cada 2 milisegundos el estado
+     * de los dispositivos.
      */
     private void actualizarTabla() {
-        Timer timer = new Timer(2, (ActionEvent e) -> {
-            if(!this.h2.getListaDispositivo().isEmpty())
-             llenarTablaEncendidos();
+        Timer timer = new Timer(1, (ActionEvent e) -> {
+            if (!this.h2.getListaDispositivo().isEmpty()) {
+                llenarTablaEncendidos();
+            }
+
         });
         timer.start();
     }
-    
-    /** 
-     Funcion que verifica si existe una fila con el dato ingresado
+
+    /**
+     * Funcion que verifica si existe una fila con el dato ingresado
+     *
      * @author Julio Bodero
      */
     private Boolean exiteFila(String dato){

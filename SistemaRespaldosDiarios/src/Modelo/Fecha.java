@@ -102,9 +102,9 @@ public class Fecha { //declaracion de clase Fecha
         formato = this.anio + "-" + addCero(this.mes) + "-" + addCero(this.dia)+" "+this.hora+":"+this.minutos;
         return formato;
     }
-    public String imprimirFechasinHora() {
+    public String imprimirFechaConHoraySeg() {
         String formato;
-        formato = addCero(this.dia) + "_" + addCero(this.mes) + "_" + this.anio;
+        formato = addCero(this.dia) + "_" + addCero(this.mes) + "_" + this.anio+"-"+this.hora+"%"+this.minutos+"%"+this.segundos;
         return formato;
     }
     private String addCero(int numero){

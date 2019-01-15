@@ -5,7 +5,6 @@
  */
 package Controlador;
 
-import com.mysql.jdbc.CommunicationsException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

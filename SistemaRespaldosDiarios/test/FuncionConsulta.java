@@ -50,15 +50,12 @@ public class FuncionConsulta {
         Assert.assertEquals(true, resutado);
     }
     private Boolean isAnticipado(String fecha) {
-        String actual = new Fecha().imprimirFecha().split(" ")[0];
-
         try {
             ResultSet menor = Conectar.Consulta("select Min(Fecha) from Evento where NombreArchivoRespaldo is not null;");
             menor.next();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = sdf.parse(fecha);
             Date date2 = sdf.parse(menor.getString(1).split(" ")[0]);
-            String fechaMenor = menor.getString(1).split(" ")[0];
             //date1 < date2, devuelve un valor mayor que 0
             //date2 > date1, devuelve un valor mayor que 0
             //date1 = date3, se mostrará un 0 en la consola
@@ -70,9 +67,4 @@ public class FuncionConsulta {
         return false;
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

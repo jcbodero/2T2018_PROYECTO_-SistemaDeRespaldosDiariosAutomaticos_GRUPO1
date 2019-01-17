@@ -46,7 +46,6 @@ public class Archivos {
      */
     public static void escribirDatos(String cadena,String archivo, Boolean Sobreescribir) {
         String sFichero = archivo;
-        File fichero = new File(sFichero);
         FileWriter fstream;
         try {
             fstream = new FileWriter(sFichero, Sobreescribir);

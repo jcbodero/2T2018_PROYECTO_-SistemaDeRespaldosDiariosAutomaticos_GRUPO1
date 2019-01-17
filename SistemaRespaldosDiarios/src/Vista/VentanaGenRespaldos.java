@@ -6,6 +6,7 @@
 package Vista;
 
 import Controlador.Archivos;
+import Controlador.ClienteFtp;
 import Controlador.Conectar;
 import Controlador.SSH;
 import Modelo.Fecha;
@@ -167,6 +168,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new consultaArchivo().show();
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /** 
@@ -175,15 +177,19 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
      */
     private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
-            
+           
             if (Encendido() && !Conectar.IsServerCaido) {
                 String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
                 System.out.println(resultado);
                 String nombre = variablesGlobales.DISPOSITIVO_ACTIVO + "-" + (new Fecha()).imprimirFechaConHoraySeg();
                 Archivos.escribirDatos(resultado, "src/DocumentosGenerados/" + nombre + ".cfg", false);
+                ClienteFtp.guardar("C:\\Users\\JULIO\\Documents\\NetBeansProjects\\"
+                        + "2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\"
+                        + "src\\DocumentosGenerados\\" + nombre + ".cfg");
                 try {
                     Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
                             variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre + ".cfg");
+                    JOptionPane.showMessageDialog(null, "Respaldo Generado");
                 } catch (Exception e) {
                 }
 
@@ -206,7 +212,6 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
         this.txtDispositivoActivo.enable(true);
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCambiarActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
@@ -219,30 +224,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         });
         timer.start();
     }
-    private int getMaxArchivo(String ruta, String nombre) {
-        LinkedList<Integer> max = new LinkedList<>();
-        File carpeta = new File(ruta);
-        File[] archivos;
-        if (carpeta.exists()) {
-            if (carpeta.isDirectory()) {
-                archivos = carpeta.listFiles();
-                for (int i = 0; i < archivos.length; i++) {
-                    if (archivos[i].getName().split(".")[0].equals(nombre)) {
-                        System.out.println(archivos[i].getName());
-                        String[] linea = archivos[i].getName().split(".");
-                        max.add(Integer.parseInt(linea[0]));
-                    }
-                }
-            }
-        }
-        int maximo = 0;
-        for (int i = 0; i < max.size(); i++) {
-            if (max.get(i) > maximo) {
-                maximo = max.get(i);
-            }
-        }
-        return maximo;
-    }
+   
     /** 
      *@author Julio Bodero
      * Funcion que valida si el dispositivo esta encendido

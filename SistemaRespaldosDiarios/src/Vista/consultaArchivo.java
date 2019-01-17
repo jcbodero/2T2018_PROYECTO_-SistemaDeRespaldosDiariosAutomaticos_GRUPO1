@@ -5,7 +5,9 @@
  */
 package Vista;
 
+import Controlador.Archivos;
 import Controlador.Conectar;
+import Controlador.Ping;
 import Modelo.Fecha;
 import Modelo.variablesGlobales;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,7 @@ public class consultaArchivo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         actualizarTabla();
+        actualizarServer();
         this.setLocation(600, 200);
     }
 
@@ -233,10 +236,26 @@ public class consultaArchivo extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarActionPerformed
-       this.descargar(contenedorArchivos.getSelectedItem());
-       JOptionPane.showMessageDialog(null, "Archivo Descargado..............");
+        System.out.println(contenedorArchivos.getSelectedIndex());
+        if(variablesGlobales.ServerCaido){
+            JOptionPane.showMessageDialog(null, "Servidor Caido");
+            return;
+        }
+        if (contenedorArchivos.getSelectedIndex() != -1) {
+            this.descargar(contenedorArchivos.getSelectedItem());
+            JOptionPane.showMessageDialog(null, "Archivo Descargado..............");
+            Archivos.escribirDatos("Archivo Descargado", "src/DocumentosGenerados/logs", true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione Archivo");
+        }
     }//GEN-LAST:event_btnDescargarActionPerformed
-
+    private void actualizarServer() {
+        Timer timer = new Timer(1, (ActionEvent e) -> {
+            variablesGlobales.ServerCaido = !new Ping("192.168.3.3").isReachable();
+            
+        });
+        timer.start();
+    }
     private void consultaMes(String mes, int seleccion) {
         String sql = "";
         if (seleccion == 1){
@@ -395,8 +414,6 @@ public class consultaArchivo extends javax.swing.JFrame {
 
     }
     private Boolean isAnticipado(String fecha) {
-        String actual = new Fecha().imprimirFecha().split(" ")[0];
-
         try {
             ResultSet menor = Conectar.Consulta("select Min(Fecha) from Evento where NombreArchivoRespaldo is not null;");
             menor.next();

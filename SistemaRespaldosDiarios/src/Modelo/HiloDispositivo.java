@@ -27,9 +27,7 @@ public class HiloDispositivo extends Thread{
     public HiloDispositivo() {
         this.listaDispositivo = new LinkedList<>();
         this.direccionesIp = new LinkedList<>();
-        this.direccionesIp.add("192.168.1.1");
-        this.direccionesIp.add("192.168.2.1");
-        this.direccionesIp.add("192.168.3.1");
+        cargarDirecciones();
     }
     
     @Override
@@ -83,6 +81,12 @@ public class HiloDispositivo extends Thread{
             }
         }
         return false;
+    }
+
+    private void cargarDirecciones() {
+        this.direccionesIp.add("192.168.1.1");
+        this.direccionesIp.add("192.168.2.1");
+        this.direccionesIp.add("192.168.3.1");
     }
     
     

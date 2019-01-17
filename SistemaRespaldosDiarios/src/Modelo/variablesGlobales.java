@@ -35,4 +35,5 @@ public class variablesGlobales {
     public static String DISPOSITIVO_ESTADO;
     
     public static LinkedList<String> dispositivos = new LinkedList<>();
+    public static boolean ServerCaido;
 }

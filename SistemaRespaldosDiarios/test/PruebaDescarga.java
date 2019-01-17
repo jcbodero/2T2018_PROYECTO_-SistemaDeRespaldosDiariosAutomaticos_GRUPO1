@@ -77,9 +77,4 @@ public class PruebaDescarga {
         boolean result = copyFile(fromFile, toFile);
         return result;
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

@@ -41,11 +41,6 @@ public class ClaseFecha {
     @Test
     public void pruebaIngreso(){
         String resutado = fecha.imprimirFecha();
-        Assert.assertEquals("2019-01-16 3:21", resutado);
+        Assert.assertEquals("2019-01-16 10:45", resutado);
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

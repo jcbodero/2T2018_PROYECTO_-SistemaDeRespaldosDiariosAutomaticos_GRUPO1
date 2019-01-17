@@ -46,9 +46,4 @@ public class ClaseUsuario {
         Boolean resutado = user.ExisteUsuario();
         Assert.assertEquals(true, resutado);
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

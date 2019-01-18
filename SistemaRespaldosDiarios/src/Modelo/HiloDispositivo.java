@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import Controlador.Archivos;
 import Controlador.Ping;
 import Controlador.SSH;
 import com.jcraft.jsch.JSchException;
@@ -84,9 +85,11 @@ public class HiloDispositivo extends Thread{
     }
 
     private void cargarDirecciones() {
-        this.direccionesIp.add("192.168.1.1");
-        this.direccionesIp.add("192.168.2.1");
-        this.direccionesIp.add("192.168.3.1");
+        try {
+            Archivos.leerDatos(direccionesIp);
+        } catch (Exception e) {
+        }
+        
     }
     
     

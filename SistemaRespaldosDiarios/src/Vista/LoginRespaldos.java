@@ -6,13 +6,18 @@
 package Vista;
 
 import Controlador.Archivos;
-import Controlador.Conectar;
+import Controlador.SSH;
 import Modelo.Dispositivo;
 import Modelo.Fecha;
 import Modelo.HiloDispositivo;
+import Modelo.HiloServidorCaido;
 import Modelo.Usuario;
 import Modelo.variablesGlobales;
+import com.jcraft.jsch.JSchException;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -24,25 +29,25 @@ import javax.swing.table.DefaultTableModel;
  * @author 
  * @version:5/8/2018
  */
-
 /**
  *
  * @author JULIO
  */
+public class LoginRespaldos extends javax.swing.JFrame {
 
-public class LoginRespaldos extends javax.swing.JFrame{
-    
     private HiloDispositivo h2;
+    private HiloServidorCaido h1;
 
     /**
      *
      */
-    public LoginRespaldos(){
+    public LoginRespaldos() {
         initComponents();
         iniciarHilos();
         this.setLocationRelativeTo(null);
         actualizarTabla();
-       
+        actualizarBaseDatos();
+
     }
 
     /**
@@ -209,39 +214,25 @@ public class LoginRespaldos extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-       if (!IngresoValido()){ 
-           return;
-       }
+        if (!IngresoValido()) {
+            return;
+        }
         Usuario us = new Usuario(txtUsuario.getText(), txtContra.getText());
         if (us.ExisteUsuario()) {
-            JOptionPane.showMessageDialog(null, "Bienvenido " + us.getNombre());
-            
-            //String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
-            
-            String seleccion = estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 0).toString().trim();
-            Archivos.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(),seleccion, "S-Correcto");
-            variablesGlobales.USUARIO_ACTIVO = us.getNombre();
-            variablesGlobales.DISPOSITIVO_ACTIVO = seleccion;
-            variablesGlobales.DISPOSITIVO_DIRECCIONIP = buscarIPDispositivo(seleccion);
-            variablesGlobales.DISPOSITIVO_ESTADO = estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 1).toString().trim();
-            System.out.println(variablesGlobales.DISPOSITIVO_ESTADO);
-            Reestablecer();
-            h2.stop();
-            try {
-                this.setVisible(false);
-                VentanaGenRespaldos m1 = new VentanaGenRespaldos();
-                m1.show();
-            } catch (Exception e) {
+            variablesGlobales.DISPOSITIVO_ESTADO = estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 1).toString().trim();
+            if ("Off".equals(variablesGlobales.DISPOSITIVO_ESTADO)) {
+                return;
             }
-            
-        } else if( Conectar.IsServerCaido){
+            IniciarRespaldos(us);
+
+        } else if (HiloServidorCaido.ServerBaseDatosCaido) {
             JOptionPane.showMessageDialog(null, "SERVIDOR CAIDO !!!",
-            "Error",JOptionPane.ERROR_MESSAGE);
+                    "Error", JOptionPane.ERROR_MESSAGE);
             Reestablecer();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
-            Archivos.escribirDatos(txtUsuario.getText()+";"+estadoDispositivo.getValueAt( estadoDispositivo.getSelectedRow(), 0).toString().trim()+";"+
-                        "Ingreso Fallido"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
+            Archivos.escribirDatos(txtUsuario.getText() + ";" + estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 0).toString().trim() + ";"
+                    + "Ingreso Fallido" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
             Reestablecer();
         }
 
@@ -251,12 +242,11 @@ public class LoginRespaldos extends javax.swing.JFrame{
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
     /**
-     *@author Julio Bodero
-     * Funcion que valida si el usuario ha ingresado en las cajas de texto su usuario, 
-     * contraseña y la seleccion de un dispositivo
+     * @author Julio Bodero Funcion que valida si el usuario ha ingresado en las
+     * cajas de texto su usuario, contraseña y la seleccion de un dispositivo
      */
-    private boolean IngresoValido(){
-         if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 &&  estadoDispositivo.getSelectedRow() == -1) {
+    private boolean IngresoValido() {
+        if (txtUsuario.getText().length() == 0 && txtContra.getText().length() == 0 && estadoDispositivo.getSelectedRow() == -1) {
             JOptionPane.showMessageDialog(null, "Ingrese Usuario, Contraseña Y seleccione Dispositivo");
             return false;
         } else {
@@ -266,47 +256,51 @@ public class LoginRespaldos extends javax.swing.JFrame{
             }
             if (txtContra.getText().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Ingrese Contraseña");
-                Archivos.escribirDatos(txtUsuario.getText()+";"+
-                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
+                Archivos.escribirDatos(txtUsuario.getText() + ";"
+                        + "Falta Informacion" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
                 return false;
             }
-            if ( estadoDispositivo.getSelectedRow() == -1) {
+            if (estadoDispositivo.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Seleccione Dispositivo");
-                 Archivos.escribirDatos(txtUsuario.getText()+";"+
-                        "Falta Informacion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
+                Archivos.escribirDatos(txtUsuario.getText() + ";"
+                        + "Falta Informacion" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
                 return false;
             }
         }
-        
+
         return true;
     }
-    /** 
-     *@author Julio Bodero
-     * Funcion que pone en blanco los datos ingresados en las cajas de texto
+
+    /**
+     * @author Julio Bodero Funcion que pone en blanco los datos ingresados en
+     * las cajas de texto
      */
-    private void Reestablecer(){
+    private void Reestablecer() {
         txtContra.setText(null);
         txtUsuario.setText(null);
-        
+
     }
-    
-   
+
     /**
-     *@author Julio Bodero
-     * Funcion que llena las columnas de la tabla donde 
-     * se encuentran el nombre de los dispositivos y su estado.
+     * @author Julio Bodero Funcion que llena las columnas de la tabla donde se
+     * encuentran el nombre de los dispositivos y su estado.
      */
     private void llenarTablaEncendidos() {
         try {
             for (Dispositivo dispo : h2.getListaDispositivo()) {
-                if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
-                    DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
-                    modelo.addRow(new Object[]{separaString(dispo.getNombre()), dispo.getEstado()});
-                    System.out.println(dispo);
-                    variablesGlobales.dispositivos.add(separaString(dispo.getNombre()));
-                } else if (exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
-                    reemplazarFila(dispo);
-                }
+                llenarTableroDispositivo(dispo);
+            }
+        } catch (Exception e) {
+        }
+
+    }
+    private void llenarBaseDatosDispositivo() {
+        try {
+            if(HiloServidorCaido.ServerBaseDatosCaido){
+                return;
+            }
+            for (Dispositivo dispo : h2.getListaDispositivo()) {
+                crearDispositivo(dispo);              
             }
         } catch (Exception e) {
         }
@@ -321,6 +315,8 @@ public class LoginRespaldos extends javax.swing.JFrame{
     private void iniciarHilos() {
         this.h2 = new HiloDispositivo();
         this.h2.start();
+        this.h1 = new HiloServidorCaido();
+        this.h1.start();
     }
 
     /**
@@ -328,7 +324,7 @@ public class LoginRespaldos extends javax.swing.JFrame{
      * de los dispositivos.
      */
     private void actualizarTabla() {
-        Timer timer = new Timer(1, (ActionEvent e) -> {
+        Timer timer = new Timer(100, (ActionEvent e) -> {
             if (!this.h2.getListaDispositivo().isEmpty()) {
                 llenarTablaEncendidos();
             }
@@ -336,75 +332,134 @@ public class LoginRespaldos extends javax.swing.JFrame{
         });
         timer.start();
     }
+    private void actualizarBaseDatos() {
+        Timer timer = new Timer(10000, (ActionEvent e) -> {
+            if (!this.h2.getListaDispositivo().isEmpty()) {
+                llenarBaseDatosDispositivo();
+                System.out.println("Acualizado");
+            }
+
+        });
+        timer.start();
+    }
+
+    private void IniciarRespaldos(Usuario us) {
+        JOptionPane.showMessageDialog(null, "Bienvenido " + us.getNombre());
+        //String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
+        String seleccion = estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 0).toString().trim();
+        Archivos.guardarHistorialEvento(us.getUsuario(), (new Fecha()).imprimirFecha(), seleccion, "S-Correcto");
+        variablesGlobales.USUARIO_ACTIVO = us.getNombre();
+        variablesGlobales.DISPOSITIVO_ACTIVO = seleccion;
+        variablesGlobales.DISPOSITIVO_DIRECCIONIP = buscarIPDispositivo(seleccion);
+        Reestablecer();
+        h2.stop();
+        try {
+            this.setVisible(false);
+            VentanaGenRespaldos m1 = new VentanaGenRespaldos();
+            m1.show();
+        } catch (Exception e) {
+        }
+    }
 
     /**
      * Funcion que verifica si existe una fila con el dato ingresado
      *
      * @author Julio Bodero
      */
-    private Boolean exiteFila(String dato){
-        if(dato==null){
+    private Boolean exiteFila(String dato) {
+        if (dato == null) {
             return false;
         }
-        if(dato.length() == 0){
+        if (dato.length() == 0) {
             return false;
         }
         for (int i = 0; i < estadoDispositivo.getRowCount(); i++) {
-            String valor  = estadoDispositivo.getValueAt(i, 0).toString().trim();
-            if(valor.equals(dato)){
+            String valor = estadoDispositivo.getValueAt(i, 0).toString().trim();
+            if (valor.equals(dato)) {
                 return true;
             }
         }
         return false;
     }
-    /** 
-     *@author Julio Bodero
-     * Funcion busca un dispositivo en la tabla de dispositivo y  actualiza la fila del estado del dispositivo 
+
+    /**
+     * @author Julio Bodero Funcion busca un dispositivo en la tabla de
+     * dispositivo y actualiza la fila del estado del dispositivo
      */
-    private void reemplazarFila(Dispositivo dato){
-        if(dato==null){
-            return ;
+    private void reemplazarFila(Dispositivo dato) {
+        if (dato == null) {
+            return;
         }
-        if(dato.getNombre().length() == 0){
-            return ;
+        if (dato.getNombre().length() == 0) {
+            return;
         }
         for (int i = 0; i < estadoDispositivo.getRowCount(); i++) {
-            String valor  = estadoDispositivo.getValueAt(i, 0).toString().trim();
-            if(valor.equals(separaString(dato.getNombre()))){
-                estadoDispositivo.setValueAt(dato.getEstado(),i,1);
-                
+            String valor = estadoDispositivo.getValueAt(i, 0).toString().trim();
+            if (valor.equals(separaString(dato.getNombre()))) {
+                estadoDispositivo.setValueAt(dato.getEstado(), i, 1);
+
             }
         }
-        
+
     }
+
     /**
      * Funcion que separa la palabra hostname de una consulta ssh
-     * @param cadena 
-     * @return  
+     *
+     * @param cadena
+     * @return
      * @autor Eduardo Veintimilla
      */
-    private String separaString(String cadena){
+    private String separaString(String cadena) {
         String lista[] = cadena.split(" ");
-        for (int i = 0; i < lista.length ; i++) {
+        for (int i = 0; i < lista.length; i++) {
             lista[i] = lista[i].replace(" ", "");
             lista[i] = lista[i].replace("\n", "");
-            
+
         }
         return lista[1];
     }
 
-    /** 
-     *@author Julio Bodero
-     * Funcion que busca la direccion ip de un dispositivo
+    /**
+     * @author Julio Bodero Funcion que busca la direccion ip de un dispositivo
      */
-    private String buscarIPDispositivo(String nombre){
+    private String buscarIPDispositivo(String nombre) {
         for (Dispositivo dispositivo : h2.getListaDispositivo()) {
-            if(separaString(dispositivo.getNombre()).equals(nombre)){
+            if (separaString(dispositivo.getNombre()).equals(nombre)) {
                 return dispositivo.getDirip();
             }
         }
-        return"";
+        return "";
     }
+
+    private String obtenerSerie(String cadena) {
+        String[] linea = cadena.split("\n");
+        String[] linea2 = linea[0].split(",");
+        String[] linea3 = linea2[2].split(":");
+        return linea3[1].trim();
+    }
+
+    private void crearDispositivo(Dispositivo dispo) {
+        if (!Archivos.existeDispositivo(dispo.getDirip())) {
+            try {
+                Archivos.guardarDispositivo(obtenerSerie(SSH.ConectarSSh("admin", "admin", dispo.getDirip(), 22, "show inventory | include SN")) + "-" + dispo.getDirip(),
+                        separaString(dispo.getNombre()), dispo.getDirip());
+            } catch (IllegalAccessException | JSchException | IOException ex) {
+
+            }
+        }
+    }
+    
+    private void llenarTableroDispositivo(Dispositivo dispo) {
+        if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
+            DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
+            modelo.addRow(new Object[]{separaString(dispo.getNombre()), dispo.getEstado()});
+            variablesGlobales.dispositivos.add(separaString(dispo.getNombre()));
+        } else if (exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
+            reemplazarFila(dispo);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -455,5 +510,4 @@ public class LoginRespaldos extends javax.swing.JFrame{
     private org.edisoncor.gui.textField.TextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
-    
 }

@@ -18,7 +18,6 @@ public class Conectar {
     static Connection contacto = null;
     private static String usuario = "estudiante";
     private static String password = "estudiante";
-    public static  boolean IsServerCaido = false;
     
     /**
      *Funcion que realiza la conexion a la base de datos y verifica que no este caido el servidor
@@ -40,8 +39,6 @@ public class Conectar {
         try{
             contacto = DriverManager.getConnection(url, Conectar.usuario, Conectar.password);
         }catch (Exception e){
-             
-             Conectar.IsServerCaido  =true;
         }
         return contacto;
     }
@@ -62,7 +59,6 @@ public class Conectar {
             ResultSet respuesta = declara.executeQuery(consulta);
             return respuesta;
         }catch (SQLException e){
-            Conectar.IsServerCaido  = true;
         }
         return null;
     }

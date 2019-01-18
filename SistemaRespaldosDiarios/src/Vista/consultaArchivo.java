@@ -7,8 +7,7 @@ package Vista;
 
 import Controlador.Archivos;
 import Controlador.Conectar;
-import Controlador.Ping;
-import Modelo.Fecha;
+import Modelo.HiloServidorCaido;
 import Modelo.variablesGlobales;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -37,11 +36,11 @@ public class consultaArchivo extends javax.swing.JFrame {
      * Creates new form consultaArchivo
      */
     private String fechaMenor;
+
     public consultaArchivo() {
         initComponents();
         this.setLocationRelativeTo(null);
         actualizarTabla();
-        actualizarServer();
         this.setLocation(600, 200);
     }
 
@@ -164,19 +163,19 @@ public class consultaArchivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-       // --select NombreArchivoRespaldo from Evento where year(Fecha)='2019' and NombreArchivoRespaldo like '%ROUTER%' and Fecha >='2019-01-10 18:40:00.000000';
+        // --select NombreArchivoRespaldo from Evento where year(Fecha)='2019' and NombreArchivoRespaldo like '%ROUTER%' and Fecha >='2019-01-10 18:40:00.000000';
         //select Min(Fecha) from Evento;
-       this.contenedorArchivos.removeAll();
+        this.contenedorArchivos.removeAll();
         if (radioNombre.isSelected() && radioFecha.isSelected()) {
-            
+
             if (comboMes.getSelectedIndex() != 0 && comboDia.getSelectedIndex() == 0 && comboYear.getSelectedIndex() == 0) {
-                consultaMes(comboMes.getSelectedItem().toString(),1);
+                consultaMes(comboMes.getSelectedItem().toString(), 1);
             }
             if (comboMes.getSelectedIndex() == 0 && comboDia.getSelectedIndex() != 0 && comboYear.getSelectedIndex() == 0) {
-                consultaDia(comboDia.getSelectedItem().toString(),1);
+                consultaDia(comboDia.getSelectedItem().toString(), 1);
             }
             if (comboMes.getSelectedIndex() == 0 && comboDia.getSelectedIndex() == 0 && comboYear.getSelectedIndex() != 0) {
-                consultaYear(comboYear.getSelectedItem().toString(),1);
+                consultaYear(comboYear.getSelectedItem().toString(), 1);
             }
 
             if (comboMes.getSelectedIndex() != 0 && comboDia.getSelectedIndex() != 0 && comboYear.getSelectedIndex() != 0) {
@@ -223,49 +222,44 @@ public class consultaArchivo extends javax.swing.JFrame {
                 consultaPorNombre();
             }
         }
-        if(radioNombre.isSelected() && !radioFecha.isSelected()){
-            
+        if (radioNombre.isSelected() && !radioFecha.isSelected()) {
+
             consultaPorNombre();
         }
-        if(!radioNombre.isSelected() && !radioFecha.isSelected()){
-            
+        if (!radioNombre.isSelected() && !radioFecha.isSelected()) {
+
             consultaAll();
         }
-        
+
 
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarActionPerformed
-        System.out.println(contenedorArchivos.getSelectedIndex());
-        if(variablesGlobales.ServerCaido){
+       
+        if (HiloServidorCaido.ServerBaseDatosCaido) {
             JOptionPane.showMessageDialog(null, "Servidor Caido");
             return;
         }
         if (contenedorArchivos.getSelectedIndex() != -1) {
             this.descargar(contenedorArchivos.getSelectedItem());
             JOptionPane.showMessageDialog(null, "Archivo Descargado..............");
-            Archivos.escribirDatos("Archivo Descargado", "src/DocumentosGenerados/logs", true);
+            Archivos.escribirDatos("Archivo Descargado" + "," + variablesGlobales.USUARIO_ACTIVO + ","
+                    + contenedorArchivos.getSelectedItem(), "src/DocumentosGenerados/logs", true);
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione Archivo");
         }
     }//GEN-LAST:event_btnDescargarActionPerformed
-    private void actualizarServer() {
-        Timer timer = new Timer(1, (ActionEvent e) -> {
-            variablesGlobales.ServerCaido = !new Ping("192.168.3.3").isReachable();
-            
-        });
-        timer.start();
-    }
+
     private void consultaMes(String mes, int seleccion) {
         String sql = "";
-        if (seleccion == 1){
+        if (seleccion == 1) {
             sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes
-                + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
+                    + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
         }
-        if(seleccion == 2){
-            sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes+";";
+        if (seleccion == 2) {
+            sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + ";";
         }
-        
+
         ResultSet res = Conectar.Consulta(sql);
         try {
             try {
@@ -282,14 +276,15 @@ public class consultaArchivo extends javax.swing.JFrame {
         }
 
     }
+
     private void consultaDia(String dia, int seleccion) {
         String sql = "";
-        if (seleccion == 1){
+        if (seleccion == 1) {
             sql = " select NombreArchivoRespaldo from Evento where day(Fecha)='" + dia
-                + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
+                    + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%';";
         }
-        if(seleccion == 2){
-            sql = " select NombreArchivoRespaldo from Evento where day(Fecha)='" + dia +";";
+        if (seleccion == 2) {
+            sql = " select NombreArchivoRespaldo from Evento where day(Fecha)='" + dia + ";";
         }
         ResultSet res = Conectar.Consulta(sql);
         try {
@@ -307,15 +302,15 @@ public class consultaArchivo extends javax.swing.JFrame {
         }
 
     }
-    
+
     private void consultaYear(String year, int seleccion) {
         String sql = "";
-        if (seleccion == 1){
+        if (seleccion == 1) {
             sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year
-                + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%' and NombreArchivoRespaldo is not null;";
+                    + "' and NombreArchivoRespaldo like '%" + variablesGlobales.DISPOSITIVO_ACTIVO + "%' and NombreArchivoRespaldo is not null;";
         }
-        if(seleccion == 2){
-            sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year+" and NombreArchivoRespaldo is not null;";
+        if (seleccion == 2) {
+            sql = " select NombreArchivoRespaldo from Evento where year(Fecha)='" + year + " and NombreArchivoRespaldo is not null;";
         }
         ResultSet res = Conectar.Consulta(sql);
         try {
@@ -357,7 +352,7 @@ public class consultaArchivo extends javax.swing.JFrame {
 
     private void consultaFecha(String dia, String mes, String year) {
         String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + "' and "
-                + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'"+" and NombreArchivoRespaldo is not null;";
+                + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'" + " and NombreArchivoRespaldo is not null;";
         ResultSet res = Conectar.Consulta(sql);
         try {
             try {
@@ -413,6 +408,7 @@ public class consultaArchivo extends javax.swing.JFrame {
         }
 
     }
+
     private Boolean isAnticipado(String fecha) {
         try {
             ResultSet menor = Conectar.Consulta("select Min(Fecha) from Evento where NombreArchivoRespaldo is not null;");
@@ -442,46 +438,48 @@ public class consultaArchivo extends javax.swing.JFrame {
             //date1 < date2, devuelve un valor mayor que 0
             //date2 > date1, devuelve un valor mayor que 0
             //date1 = date3, se mostrará un 0 en la consola
-            return date1.compareTo(date2)> 0;
+            return date1.compareTo(date2) > 0;
 
         } catch (ParseException | SQLException ex) {
 
         }
         return false;
     }
-    private void  activarCombo(){
+
+    private void activarCombo() {
         comboYear.enable(true);
         comboMes.enable(true);
         comboDia.enable(true);
     }
-    private void  desactivarCombo(){
+
+    private void desactivarCombo() {
         comboYear.enable(false);
         comboMes.enable(false);
         comboDia.enable(false);
     }
+
     private void actualizarTabla() {
         Timer timer = new Timer(2, (ActionEvent e) -> {
-            if(radioNombre.isSelected() && !radioFecha.isSelected()){
+            if (radioNombre.isSelected() && !radioFecha.isSelected()) {
                 desactivarCombo();
             }
-            if(!radioNombre.isSelected() && !radioFecha.isSelected()){
+            if (!radioNombre.isSelected() && !radioFecha.isSelected()) {
                 desactivarCombo();
             }
-            if(!radioNombre.isSelected() && radioFecha.isSelected()){
+            if (!radioNombre.isSelected() && radioFecha.isSelected()) {
                 activarCombo();
             }
             if (radioNombre.isSelected() && radioFecha.isSelected()) {
                 activarCombo();
             }
-            
-            
+
         });
         timer.start();
     }
-    
+
     /**
-    *@author Cesar Navas
-    */
+     * @author Cesar Navas
+     */
     private boolean copyFile(String fromFile, String toFile) {
         File origin = new File(fromFile);
         File destination = new File(toFile);
@@ -506,14 +504,16 @@ public class consultaArchivo extends javax.swing.JFrame {
             return false;
         }
     }
-    private void descargar(String Archivo){
-        String fromFile = "C:\\Users\\JULIO\\Documents\\NetBeansProjects\\2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\src\\DocumentosGenerados\\"+Archivo;
-        String toFile = "C:\\Users\\JULIO\\Downloads\\"+Archivo;
+
+    private void descargar(String Archivo) {
+        String fromFile = "C:\\Users\\JULIO\\Documents\\NetBeansProjects\\2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\src\\DocumentosGenerados\\" + Archivo;
+        String toFile = "C:\\Users\\JULIO\\Downloads\\" + Archivo;
         boolean result = copyFile(fromFile, toFile);
-        System.out.println(result?
-            "Success! File copying (Éxito! Fichero copiado)":
-                "Error! Failed to copy the file (Error! No se ha podido copiar el fichero)");
+        System.out.println(result
+                ? "Success! File copying (Éxito! Fichero copiado)"
+                : "Error! Failed to copy the file (Error! No se ha podido copiar el fichero)");
     }
+
     /**
      * @param args the command line arguments
      */

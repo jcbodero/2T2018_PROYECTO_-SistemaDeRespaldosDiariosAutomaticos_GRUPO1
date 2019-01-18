@@ -7,16 +7,13 @@ package Vista;
 
 import Controlador.Archivos;
 import Controlador.ClienteFtp;
-import Controlador.Conectar;
 import Controlador.SSH;
 import Modelo.Fecha;
+import Modelo.HiloServidorCaido;
 import Modelo.variablesGlobales;
 import com.jcraft.jsch.JSchException;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -168,45 +165,56 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new consultaArchivo().show();
-       
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /** 
-     *@author Julio Bodero
-     * Accion del Boton crearRespaldo se genera un archivo de configuracion si el disposotivo no se encuentra apagado. 
+    /**
+     * @author Julio Bodero Accion del Boton crearRespaldo se genera un archivo
+     * de configuracion si el disposotivo no se encuentra apagado.
      */
     private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
-           
-            if (Encendido() && !Conectar.IsServerCaido) {
+
+            if (Encendido() && !HiloServidorCaido.ServerBaseDatosCaido 
+                    && !HiloServidorCaido.ServerFTPCaido) {
                 String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
                 System.out.println(resultado);
                 String nombre = variablesGlobales.DISPOSITIVO_ACTIVO + "-" + (new Fecha()).imprimirFechaConHoraySeg();
                 Archivos.escribirDatos(resultado, "src/DocumentosGenerados/" + nombre + ".cfg", false);
-                ClienteFtp.guardar("C:\\Users\\JULIO\\Documents\\NetBeansProjects\\"
-                        + "2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\"
-                        + "src\\DocumentosGenerados\\" + nombre + ".cfg");
+                ClienteFtp.guardar("src/DocumentosGenerados/" + nombre + ".cfg", nombre + ".cfg");
                 try {
-                    Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
-                            variablesGlobales.DISPOSITIVO_ACTIVO, "Respaldo", nombre + ".cfg");
+                    Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO,
+                            (new Fecha()).imprimirFecha(),
+                            variablesGlobales.DISPOSITIVO_ACTIVO,
+                            "Respaldo", nombre + ".cfg");
                     JOptionPane.showMessageDialog(null, "Respaldo Generado");
                 } catch (Exception e) {
                 }
 
             } else {
                 try {
-                    Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
+                    if (!HiloServidorCaido.ServerBaseDatosCaido) {
+                        Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
+                                variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Servidor Caido");
+                    }
+                    if (HiloServidorCaido.ServerFTPCaido){
+                        JOptionPane.showMessageDialog(null, "Servidor Caido");
+                    }
+
                 } catch (Exception e) {
                 }
-                
+
             }
-           
+
         } catch (JSchException | IllegalAccessException | IOException ex) {
             JOptionPane.showMessageDialog(null, "Falla de conexión con el servidor" + ex.getMessage(),
-            "Error de Conexion",JOptionPane.ERROR_MESSAGE);
-            
-            Archivos.escribirDatos(variablesGlobales.USUARIO_ACTIVO+";"+
-                        "Error Conexion"+";"+(new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
+                    "Error de Conexion", JOptionPane.ERROR_MESSAGE);
+
+            Archivos.escribirDatos(variablesGlobales.USUARIO_ACTIVO + ";"
+                    + "Error Conexion" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
         }
     }//GEN-LAST:event_btnCrearRespaldosActionPerformed
 
@@ -224,19 +232,20 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         });
         timer.start();
     }
-   
-    /** 
-     *@author Julio Bodero
-     * Funcion que valida si el dispositivo esta encendido
+
+    /**
+     * @author Julio Bodero Funcion que valida si el dispositivo esta encendido
      */
-    private Boolean Encendido(){
+    private Boolean Encendido() {
         return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
     }
-    private void LLenarLista(){
+
+    private void LLenarLista() {
         for (String dispositivo : variablesGlobales.dispositivos) {
             this.txtDispositivoActivo.addItem(dispositivo);
         }
     }
+
     /**
      * @param args the command line arguments
      */

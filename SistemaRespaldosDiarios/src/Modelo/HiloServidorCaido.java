@@ -14,7 +14,15 @@ import javax.swing.Timer;
  * @author JULIO
  */
 public class HiloServidorCaido extends Thread{
+
+    /**
+     *Clase que inicia hilos de verificacion al servidor
+     */
     public static boolean ServerBaseDatosCaido;
+
+    /**
+     *
+     */
     public static boolean ServerFTPCaido;
     
     @Override

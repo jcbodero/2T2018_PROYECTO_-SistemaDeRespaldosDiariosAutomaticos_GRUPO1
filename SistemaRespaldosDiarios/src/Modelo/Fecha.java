@@ -14,6 +14,12 @@ import java.util.Calendar;
 *@author Luis Macas, Christin Ochoa, Martin Herrera
 *@version:17/7/2018
  */
+
+/**
+ *Clase Fecha
+ * @author JULIO
+ */
+
 public class Fecha { //declaracion de clase Fecha
 
     private int dia; //atributo para dia
@@ -26,6 +32,10 @@ public class Fecha { //declaracion de clase Fecha
     /*
     *contructor para establecer la fecha
      */
+
+    /**
+     *Constructur de Fecha
+     */
     public Fecha() {  //contructor fecha
         Calendar calendario = Calendar.getInstance();  //Instanciamos un objeto
         this.anio = calendario.get(Calendar.YEAR);     // obtenemos el año actual
@@ -36,26 +46,50 @@ public class Fecha { //declaracion de clase Fecha
         this.segundos = calendario.get(Calendar.SECOND);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getHora() {
         return hora;
     }
 
+    /**
+     *
+     * @param hora
+     */
     public void setHora(int hora) {
         this.hora = hora;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMinutos() {
         return minutos;
     }
 
+    /**
+     *
+     * @param minutos
+     */
     public void setMinutos(int minutos) {
         this.minutos = minutos;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSegundos() {
         return segundos;
     }
 
+    /**
+     *
+     * @param segundos
+     */
     public void setSegundos(int segundos) {
         this.segundos = segundos;
     }
@@ -63,10 +97,20 @@ public class Fecha { //declaracion de clase Fecha
     /*
      * funciones Get y Set del atributo dia
      */
+
+    /**
+     *
+     * @return
+     */
+
     public int getDia() {
         return dia;
     }
 
+    /**
+     *
+     * @param dia
+     */
     public void setDia(int dia) {
         this.dia = dia;
     }
@@ -74,10 +118,20 @@ public class Fecha { //declaracion de clase Fecha
     /*
     *funciones Get y Set del atributo mes
      */
+
+    /**
+     *
+     * @return
+     */
+
     public int getMes() {
         return mes;
     }
 
+    /**
+     *
+     * @param mes
+     */
     public void setMes(int mes) {
         this.mes = mes;
     }
@@ -85,10 +139,20 @@ public class Fecha { //declaracion de clase Fecha
     /*
     *funciones Get y Set del atributo año
      */
+
+    /**
+     *
+     * @return
+     */
+
     public int getAnio() {
         return anio;
     }
 
+    /**
+     *
+     * @param anio
+     */
     public void setAnio(int anio) {
         this.anio = anio;
     }
@@ -97,11 +161,22 @@ public class Fecha { //declaracion de clase Fecha
     *Devuelve un String con el siguiente formato: dia_mes_año
     *@return formato cadena de caracteres que indica la fecha
      */
+
+    /**
+     *
+     * @return
+     */
+
     public String imprimirFecha() {
         String formato;
         formato = this.anio + "-" + addCero(this.mes) + "-" + addCero(this.dia)+" "+this.hora+":"+this.minutos;
         return formato;
     }
+
+    /**
+     *
+     * @return
+     */
     public String imprimirFechaConHoraySeg() {
         String formato;
         formato = addCero(this.dia) + "_" + addCero(this.mes) + "_" + this.anio+"-"+this.hora+"%"+this.minutos+"%"+this.segundos;

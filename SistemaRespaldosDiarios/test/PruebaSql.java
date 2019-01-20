@@ -21,24 +21,43 @@ import static org.junit.Assert.*;
  */
 public class PruebaSql {
     
+    /**
+     *
+     */
     public PruebaSql() {
     }
     
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
     
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
     
+    /**
+     *
+     */
     @Before
     public void setUp() {
     }
     
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
+
+    /**
+     *
+     */
     @Test
     public void pruebaIngreo(){
         Boolean resutado = this.existeDispositivo("192.168.2.1");

@@ -17,6 +17,12 @@ import java.net.InetAddress;
 *@author Luis Macas, Christin Ochoa, Martin Herrera
 *@version:17/7/2018
 */
+
+/**
+ *Funcion que realiza ping a una direccion ip especifica
+ * @author JULIO
+ */
+
 public class Ping {
     private final String address;
 
@@ -24,6 +30,12 @@ public class Ping {
 *Constructor de la clase
 *@param address Direccion ip del equipo
 */    
+
+    /**
+     *
+     * @param address
+     */
+    
     public Ping(String address) {
         this.address = address;
     }
@@ -32,6 +44,12 @@ public class Ping {
   * que se obtienen al correr el comando.
   * @param command Comando que se desea que se ejecute (ping + direccion_ip)
   */
+
+    /**
+     *
+     * @param command
+     */
+
     public  void runSystemCommand(String command) {
         try {
             Process p = Runtime.getRuntime().exec(command);
@@ -49,6 +67,12 @@ public class Ping {
     /*Esta funcion determina si una direccion ip es alcanzable
     @return Un valor booleno, yes si el dispositivo fue alcanzado, no
     si no se pudo alcanzar*/
+
+    /**
+     *
+     * @return
+     */
+
     public boolean isReachable() {
         boolean isReachable = true;  
         try {

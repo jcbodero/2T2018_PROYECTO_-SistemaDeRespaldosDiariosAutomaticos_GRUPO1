@@ -45,7 +45,7 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     private void initComponents() {
 
         btnCrearRespaldos = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnConsultaArchivo = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtUsuarioActivo = new javax.swing.JTextField();
@@ -65,10 +65,10 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Consultar Archivo Respaldo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnConsultaArchivo.setText("Consultar Archivo Respaldo");
+        btnConsultaArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnConsultaArchivoActionPerformed(evt);
             }
         });
 
@@ -142,10 +142,8 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(160, 160, 160)))))
+                            .addComponent(btnConsultaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -156,17 +154,18 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnCrearRespaldos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnConsultaArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(256, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new consultaArchivo().show();
+    private void btnConsultaArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaArchivoActionPerformed
+        variablesGlobales.ventana = new ConsultaArchivo();
+        variablesGlobales.ventana.show();
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnConsultaArchivoActionPerformed
 
     /**
      * @author Julio Bodero Accion del Boton crearRespaldo se genera un archivo
@@ -219,10 +218,12 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearRespaldosActionPerformed
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
+        variablesGlobales.ventana.setVisible(false);
         this.txtDispositivoActivo.enable(true);
     }//GEN-LAST:event_btnCambiarActionPerformed
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        variablesGlobales.ventana.setVisible(false);
         this.setVisible(false);
         new LoginRespaldos().show();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
@@ -286,8 +287,8 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnConsultaArchivo;
     private javax.swing.JButton btnCrearRespaldos;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

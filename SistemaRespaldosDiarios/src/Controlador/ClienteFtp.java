@@ -13,6 +13,12 @@ import org.apache.commons.net.ftp.FTPClient;
  * @author JULIO
  */
 public class ClienteFtp {
+
+    /**
+     *Funcion que guarda los archivos en un servidor ftp
+     * @param filename
+     * @param name
+     */
     public static void guardar(String filename , String name){
         FTPClient client = new FTPClient();
         // Datos para conectar al servidor FTP

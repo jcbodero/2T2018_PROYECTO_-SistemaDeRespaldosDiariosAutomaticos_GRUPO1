@@ -28,8 +28,6 @@ public class Archivos {
      * Funcion Que Lee Datos de un Archivo.
      *
      * @param listaDirecciones
-     * @throws FileNotFoundException
-     * @throws IOException
      */
     public static void leerDatos(LinkedList<String> listaDirecciones){
         try{
@@ -102,11 +100,24 @@ public class Archivos {
 
     }
     
+    /**
+     *Funcion que guarda la serie en la base de daos, el nombre del dispositivo y la direccion ip
+     * @param serie
+     * @param nombre
+     * @param ip
+     */
     public static void guardarDispositivo(String serie, String nombre, String ip) {
-        Conectar.ejecutarTransaccion("INSERT INTO Dispositivo(Serie, NombreDispositivo, DireccionIp, Mask) VALUES "
+        Conectar.ejecutarTransaccion("INSERT INTO Dispositivo(Serie, NombreDispositivo"
+                + ", DireccionIp, Mask) VALUES "
                 + "('"+serie+"','"+nombre+"','"+ip+"','255.255.255.0');");
 
     }
+
+    /**
+     *
+     * @param ip
+     * @return
+     */
     public static Boolean existeDispositivo(String ip) {
         ResultSet res = Conectar.Consulta("select DireccionIp from Dispositivo;");
         try {

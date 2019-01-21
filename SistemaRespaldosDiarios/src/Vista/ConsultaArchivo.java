@@ -82,12 +82,14 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         contenedorArchivos.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
 
         radioNombre.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        radioNombre.setForeground(new java.awt.Color(255, 255, 255));
         radioNombre.setText("Nombre");
 
         comboDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dia", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         comboDia.setEnabled(false);
 
         radioFecha.setFont(new java.awt.Font("Yu Gothic UI", 1, 14)); // NOI18N
+        radioFecha.setForeground(new java.awt.Color(255, 255, 255));
         radioFecha.setText("Fecha");
 
         comboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mes", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));

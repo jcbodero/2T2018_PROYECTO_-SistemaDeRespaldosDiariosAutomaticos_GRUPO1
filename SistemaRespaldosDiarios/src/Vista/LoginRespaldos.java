@@ -281,13 +281,13 @@ public class LoginRespaldos extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (!IngresoValido()) {
-             JOptionPane.showMessageDialog(this.jPanel2, "Dispositivo Apagado");
             return;
         }
         Usuario us = new Usuario(txtUsuario.getText(), txtContra.getText());
         if (us.ExisteUsuario()) {
             variablesGlobales.DISPOSITIVO_ESTADO = estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 1).toString().trim();
             if ("Off".equals(variablesGlobales.DISPOSITIVO_ESTADO)) {
+                JOptionPane.showMessageDialog(this.jPanel2, "Dispositivo Apagado");
                 return;
             }
             IniciarRespaldos(us);
@@ -297,7 +297,7 @@ public class LoginRespaldos extends javax.swing.JFrame {
                 "Error", JOptionPane.ERROR_MESSAGE);
             Reestablecer();
         } else {
-            JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
+            JOptionPane.showMessageDialog(this.jPanel2, "Usuario o Contraseña Incorrectos");
             Archivos.escribirDatos(txtUsuario.getText() + ";" + estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 0).toString().trim() + ";"
                 + "Ingreso Fallido" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
             Reestablecer();
@@ -550,11 +550,15 @@ public class LoginRespaldos extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
+        try {
+             java.awt.EventQueue.invokeLater(() -> {
 
             new LoginRespaldos().setVisible(true);
 
         });
+        } catch (Exception e) {
+        }
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

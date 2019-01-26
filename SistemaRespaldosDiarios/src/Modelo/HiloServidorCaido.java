@@ -16,12 +16,12 @@ import javax.swing.Timer;
 public class HiloServidorCaido extends Thread{
 
     /**
-     *Clase que inicia hilos de verificacion al servidor
+     *Variable que inicia hilos de verificacion al servidor
      */
     public static boolean ServerBaseDatosCaido;
 
     /**
-     *
+     *Variable que inicializa la verificacion del servidor caido
      */
     public static boolean ServerFTPCaido;
     

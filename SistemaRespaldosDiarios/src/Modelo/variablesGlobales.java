@@ -6,7 +6,6 @@
 package Modelo;
 
 import Vista.ConsultaArchivo;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -16,22 +15,22 @@ import java.util.LinkedList;
 public class variablesGlobales {
 
     /**
-     *
+     *Variable de usuario activo del sistema
      */
     public static String USUARIO_ACTIVO;
 
     /**
-     *
+     *variable de dispositivo activo del sistema 
      */
     public static String DISPOSITIVO_ACTIVO;
 
     /**
-     *
+     *variable de la direccion ip activa del sistema
      */
     public static String DISPOSITIVO_DIRECCIONIP;
 
     /**
-     *
+     *variable del estado del dispositivo seleccionado
      */
     public static String DISPOSITIVO_ESTADO;
     

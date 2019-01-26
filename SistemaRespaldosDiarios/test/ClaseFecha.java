@@ -41,6 +41,6 @@ public class ClaseFecha {
     @Test
     public void pruebaIngreso(){
         String resutado = fecha.imprimirFecha();
-        Assert.assertEquals("2019-01-16 10:45", resutado);
+        Assert.assertEquals("2019-01-20 23:44", resutado);
     }
 }

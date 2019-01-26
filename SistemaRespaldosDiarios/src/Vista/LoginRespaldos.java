@@ -33,11 +33,22 @@ import javax.swing.table.DefaultTableModel;
  */
 public class LoginRespaldos extends javax.swing.JFrame {
 
+    /**
+     * Variable que inicializa el hilo de ejecucion de los dispositivos activos del sistema
+     *
+     * @author JULIO
+     */
     private HiloDispositivo h2;
+    /**
+     * Variable que inicializa el hilo de verificacion del estado del servidor 
+     *
+     * @author JULIO
+     */
     private HiloServidorCaido h1;
 
     /**
-     *Constructor de la ventana de respaldos 
+     * .
+     * Constructor de la ventana de respaldos
      */
     public LoginRespaldos() {
         initComponents();
@@ -290,11 +301,19 @@ public class LoginRespaldos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Funcion autogenerada de Accion del Boton Salir
+     *
+     * @author JULIO
+     */
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
-
+    /**
+     *Funcion autogenerada Accion del noton Iniciar sesion, Valida que un usuario realice un ingreso valido , 
+     * consulta en la base de datos los ingresos validos de un usuario abre la nueva ventana del menu de respaldo.
+     * @author JULIO
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (!IngresoValido()) {
             return;
@@ -310,12 +329,12 @@ public class LoginRespaldos extends javax.swing.JFrame {
 
         } else if (HiloServidorCaido.ServerBaseDatosCaido) {
             JOptionPane.showMessageDialog(this.jPanel2, "SERVIDOR CAIDO !!!",
-                "Error", JOptionPane.ERROR_MESSAGE);
+                    "Error", JOptionPane.ERROR_MESSAGE);
             Reestablecer();
         } else {
             JOptionPane.showMessageDialog(this.jPanel2, "Usuario o Contraseña Incorrectos");
             Archivos.escribirDatos(txtUsuario.getText() + ";" + estadoDispositivo.getValueAt(estadoDispositivo.getSelectedRow(), 0).toString().trim() + ";"
-                + "Ingreso Fallido" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
+                    + "Ingreso Fallido" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
             Reestablecer();
         }
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -372,13 +391,18 @@ public class LoginRespaldos extends javax.swing.JFrame {
         }
 
     }
+
+    /**
+     *Funcion que llena los datos de un dispositivo en la base de datos
+     * @author JULIO
+     */
     private void llenarBaseDatosDispositivo() {
         try {
-            if(HiloServidorCaido.ServerBaseDatosCaido){
+            if (HiloServidorCaido.ServerBaseDatosCaido) {
                 return;
             }
             for (Dispositivo dispo : h2.getListaDispositivo()) {
-                crearDispositivo(dispo);              
+                crearDispositivo(dispo);
             }
         } catch (Exception e) {
         }
@@ -410,6 +434,11 @@ public class LoginRespaldos extends javax.swing.JFrame {
         });
         timer.start();
     }
+
+    /**
+     *Funcion que actualiza la base de datos de los dispositivos que no se encuentren en la base de datos
+     * @author JULIO
+     */
     private void actualizarBaseDatos() {
         Timer timer = new Timer(10000, (ActionEvent e) -> {
             if (!this.h2.getListaDispositivo().isEmpty()) {
@@ -421,6 +450,12 @@ public class LoginRespaldos extends javax.swing.JFrame {
         timer.start();
     }
 
+    /**
+     *Funcion que inicia la ventana de respaldos, guardando el nuevo nombre del usuario
+     * y el dispositivo seleccionado
+     * @author JULIO
+     * @param us
+     */
     private void IniciarRespaldos(Usuario us) {
         JOptionPane.showMessageDialog(this.jPanel2, "Bienvenido " + us.getNombre());
         //String resultado = SSH.ConectarSSh("admin","admin","192.168.1.1", 22, "show ip int bri");
@@ -441,7 +476,7 @@ public class LoginRespaldos extends javax.swing.JFrame {
 
     /**
      * Funcion que verifica si existe una fila con el dato ingresado
-     *
+     * @param dato
      * @author Julio Bodero
      */
     private Boolean exiteFila(String dato) {
@@ -463,6 +498,7 @@ public class LoginRespaldos extends javax.swing.JFrame {
     /**
      * @author Julio Bodero Funcion busca un dispositivo en la tabla de
      * dispositivo y actualiza la fila del estado del dispositivo
+     * @param dato
      */
     private void reemplazarFila(Dispositivo dato) {
         if (dato == null) {
@@ -485,7 +521,7 @@ public class LoginRespaldos extends javax.swing.JFrame {
      * Funcion que separa la palabra hostname de una consulta ssh
      *
      * @param cadena
-     * @return
+     * @return String
      * @autor Eduardo Veintimilla
      */
     private String separaString(String cadena) {
@@ -500,6 +536,7 @@ public class LoginRespaldos extends javax.swing.JFrame {
 
     /**
      * @author Julio Bodero Funcion que busca la direccion ip de un dispositivo
+     *  @param nombre 
      */
     private String buscarIPDispositivo(String nombre) {
         for (Dispositivo dispositivo : h2.getListaDispositivo()) {
@@ -510,6 +547,10 @@ public class LoginRespaldos extends javax.swing.JFrame {
         return "";
     }
 
+    /**
+     *Funcion que se ingresa una cadena de la consulta SSH y retorna la serie del dispositivo
+     * @author JULIO
+     */
     private String obtenerSerie(String cadena) {
         String[] linea = cadena.split("\n");
         String[] linea2 = linea[0].split(",");
@@ -517,6 +558,12 @@ public class LoginRespaldos extends javax.swing.JFrame {
         return linea3[1].trim();
     }
 
+    /**
+     *Funcion que verifica si un dispositivo existe en una lista 
+     * sino existe establece conexion SSH y añade al nuevo dispositivo
+     * @author JULIO
+     * @param dispo
+     */
     private void crearDispositivo(Dispositivo dispo) {
         if (!Archivos.existeDispositivo(dispo.getDirip())) {
             try {
@@ -527,7 +574,12 @@ public class LoginRespaldos extends javax.swing.JFrame {
             }
         }
     }
-    
+    /**
+     *Funcion que recibe la lista de dispositivos y añade a la tabla de
+     * dispositivis que se muestra en pantalla 
+     * @author JULIO
+     * @param dispo
+     */
     private void llenarTableroDispositivo(Dispositivo dispo) {
         if (!exiteFila(separaString(dispo.getNombre())) && dispo.getNombre().length() != 0) {
             DefaultTableModel modelo = (DefaultTableModel) estadoDispositivo.getModel();
@@ -567,14 +619,14 @@ public class LoginRespaldos extends javax.swing.JFrame {
         //</editor-fold>
         /* Create and display the form */
         try {
-             java.awt.EventQueue.invokeLater(() -> {
+            java.awt.EventQueue.invokeLater(() -> {
 
-            new LoginRespaldos().setVisible(true);
+                new LoginRespaldos().setVisible(true);
 
-        });
+            });
         } catch (Exception e) {
         }
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

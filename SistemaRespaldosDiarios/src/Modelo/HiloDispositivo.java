@@ -84,6 +84,11 @@ public class HiloDispositivo extends Thread{
         return false;
     }
 
+    /**
+     * Funcion que carga las direcciones ip de un archivo txt
+     *
+     * @author JULIO
+     */
     private void cargarDirecciones() {
         try {
             Archivos.leerDatos(direccionesIp);

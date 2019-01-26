@@ -10,13 +10,30 @@ package Modelo;
  * @author JULIO
  */
 public class Dispositivo {
+
+    /**
+     * Variable de direccion ip
+     *
+     * @author JULIO
+     */
     private String dirip;
+    /**
+     * Variable estado Dispositivo
+     *
+     * @author JULIO
+     */
     private String nombre;
+    /**
+     * Variable estado Dispositivo
+     *
+     * @author JULIO
+     */
     private String estado = "Off";
 
     /**
      * Constructor con los aributos basicos de un dispositivo de red
-     *@author Julio Bodero
+     *
+     * @author Julio Bodero
      * @param dirip
      * @param nombre
      */
@@ -26,7 +43,8 @@ public class Dispositivo {
     }
 
     /**
-     *Se obtiene la direccion ip del dispositivo
+     * Se obtiene la direccion ip del dispositivo.
+     *
      * @return
      */
     public String getDirip() {
@@ -34,7 +52,8 @@ public class Dispositivo {
     }
 
     /**
-     *Se obtiene el nombre del dispositivo
+     * Se obtiene el nombre del dispositivo
+     *
      * @return
      */
     public String getNombre() {
@@ -42,7 +61,8 @@ public class Dispositivo {
     }
 
     /**
-     *Se obtiene el estado del dispositivo por defecto se encuentra apagado
+     * Se obtiene el estado del dispositivo por defecto se encuentra apagado.
+     *
      * @return
      */
     public String getEstado() {
@@ -50,7 +70,8 @@ public class Dispositivo {
     }
 
     /**
-     *Funcion que cambia el estado segun el ping realizado al dispositivo
+     * Funcion que cambia el estado segun el ping realizado al dispositivo
+     *
      * @param estado
      */
     public void setEstado(String estado) {

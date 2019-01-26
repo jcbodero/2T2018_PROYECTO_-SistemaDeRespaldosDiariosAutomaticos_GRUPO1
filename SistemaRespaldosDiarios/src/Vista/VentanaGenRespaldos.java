@@ -195,31 +195,53 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Funcion autogenerada que realiza la accion de cambiar dispositivo
+     * seleccionado
+     *
+     * @author JULIO
+     */
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
-        if(variablesGlobales.ventana!=null){
-             variablesGlobales.ventana.setVisible(false);
+        if (variablesGlobales.ventana != null) {
+            variablesGlobales.ventana.setVisible(false);
         }
-       
+
         this.txtDispositivoActivo.enable(true);
     }//GEN-LAST:event_btnCambiarActionPerformed
 
+    /**
+     * Funcion cierra la sesion del usuario logeado
+     *
+     * @author JULIO
+     */
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
-        if(variablesGlobales.ventana!=null){
-             variablesGlobales.ventana.setVisible(false);
+        if (variablesGlobales.ventana != null) {
+            variablesGlobales.ventana.setVisible(false);
         }
         this.setVisible(false);
         new LoginRespaldos().show();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
+    /**
+     * Funcion que inicializa la ventana de consultar archivos de respaldos
+     *
+     * @author JULIO
+     */
     private void btnConsultaArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaArchivoActionPerformed
         variablesGlobales.ventana = new ConsultaArchivo();
         variablesGlobales.ventana.show();
     }//GEN-LAST:event_btnConsultaArchivoActionPerformed
 
+    /**
+     * Funcion que al presionar el boton realiza las validaciones de los
+     * servidores y cre los archivos de respaldo
+     *
+     * @author JULIO
+     */
     private void btnCrearRespaldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearRespaldosActionPerformed
         try {
 
-            if (Encendido() && !HiloServidorCaido.ServerBaseDatosCaido 
+            if (Encendido() && !HiloServidorCaido.ServerBaseDatosCaido
                     && !HiloServidorCaido.ServerFTPCaido) {
                 String resultado = SSH.ConectarSSh("admin", "admin", variablesGlobales.DISPOSITIVO_DIRECCIONIP, 22, "show run");
                 System.out.println(resultado);
@@ -240,11 +262,11 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
                     if (!HiloServidorCaido.ServerBaseDatosCaido) {
                         Archivos.guardarHistorialEvento(variablesGlobales.USUARIO_ACTIVO, (new Fecha()).imprimirFecha(),
                                 variablesGlobales.DISPOSITIVO_ACTIVO, "Apagado");
-                        
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Servidor Caido");
                     }
-                    if (HiloServidorCaido.ServerFTPCaido){
+                    if (HiloServidorCaido.ServerFTPCaido) {
                         JOptionPane.showMessageDialog(null, "Servidor Caido");
                     }
 
@@ -259,10 +281,15 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
 
             Archivos.escribirDatos(variablesGlobales.USUARIO_ACTIVO + ";"
                     + "Error Conexion" + ";" + (new Fecha()).imprimirFecha(), "src/DocumentosGenerados/logs", true);
-}
+        }
     }//GEN-LAST:event_btnCrearRespaldosActionPerformed
 
-   private void actualizarVariable() {
+    /**
+     * Hilo que actualiza la variable del dispositivo seleccionado
+     *
+     * @author JULIO
+     */
+    private void actualizarVariable() {
         Timer timer = new Timer(1, (ActionEvent e) -> {
             variablesGlobales.DISPOSITIVO_ACTIVO = this.txtDispositivoActivo.getSelectedItem().toString();
         });
@@ -276,6 +303,11 @@ public class VentanaGenRespaldos extends javax.swing.JFrame {
         return "On".equals(variablesGlobales.DISPOSITIVO_ESTADO);
     }
 
+    /**
+     * Funcion que añade la lista de dispositivos activos del sistema
+     *
+     * @author JULIO
+     */
     private void LLenarLista() {
         for (String dispositivo : variablesGlobales.dispositivos) {
             this.txtDispositivoActivo.addItem(dispositivo);

@@ -56,6 +56,12 @@ public class Usuario {
         return Existe;
     }
 
+    /**
+     * Funcion que verifica si existe usuario en una base de datos 
+     * @param Usuario 
+     * @param Contra 
+     * @author JULIO
+     */
     private void llamarUsuarioDataBase(String Usuario, String Contra) throws SQLException {
         ResultSet res = Conectar.Consulta("Select Usuario, Nombre from Administrador where Usuario = '" + Usuario + "' and Clave = '" + Contra + "';");
         try {

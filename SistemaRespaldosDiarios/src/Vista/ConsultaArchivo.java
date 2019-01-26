@@ -37,6 +37,9 @@ public class ConsultaArchivo extends javax.swing.JFrame {
      */
     private String fechaMenor;
 
+    /**
+     * Constructor de la ventana Consultar Archivo
+     */
     public ConsultaArchivo() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -192,6 +195,11 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *Funcion Autogenerada de la accion del boton consultar 
+     * valida las posibles conbinaciones en los radiobuton seleccionado y las fechas seleccionadas
+     * @author JULIO
+     */
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // --select NombreArchivoRespaldo from Evento where year(Fecha)='2019' and NombreArchivoRespaldo like '%ROUTER%' and Fecha >='2019-01-10 18:40:00.000000';
         //select Min(Fecha) from Evento;
@@ -264,8 +272,13 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnConsultarActionPerformed
 
+    /**
+     *Funcion autogenerada del boton descargar verifica que un servidor no este caido
+     * y descarga el archivo seleccionado.
+     * @author JULIO
+     */
     private void btnDescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescargarActionPerformed
-       
+
         if (HiloServidorCaido.ServerBaseDatosCaido || HiloServidorCaido.ServerFTPCaido) {
             JOptionPane.showMessageDialog(null, "Servidor Caido");
             return;
@@ -280,6 +293,12 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDescargarActionPerformed
 
+    /**
+     *Funcion que realiza la busqueda en la base de datos por mes ingresado
+     * @author JULIO
+     * @param seleccion 
+     * @param mes
+     */
     private void consultaMes(String mes, int seleccion) {
         String sql = "";
         if (seleccion == 1) {
@@ -307,6 +326,12 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que realiza la busqueda por dia seleccionado
+     *@param dia
+     * @param seleccion 
+     * @author JULIO
+     */
     private void consultaDia(String dia, int seleccion) {
         String sql = "";
         if (seleccion == 1) {
@@ -332,7 +357,12 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         }
 
     }
-
+    /**
+     * Funcion que realiza la busqueda por año seleccionado
+     *@param year 
+     * @param seleccion 
+     * @author JULIO
+     */
     private void consultaYear(String year, int seleccion) {
         String sql = "";
         if (seleccion == 1) {
@@ -359,6 +389,15 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que realiza la busqueda por fecha completa y nombre seleccionado
+     *@param dia
+     * @param mes
+     * @param year
+     * @param seleccion 
+     * @author JULIO
+     */
+
     private void consultaFechaYNombre(String dia, String mes, String year) {
         String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + "' and "
                 + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'"
@@ -380,6 +419,15 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que realiza la busqueda por fecha copeta  seleccionado
+     *@param dia
+     *@param mes
+     *@param year
+     * @param seleccion 
+     * @author JULIO
+     */
+
     private void consultaFecha(String dia, String mes, String year) {
         String sql = " select NombreArchivoRespaldo from Evento where month(Fecha)='" + mes + "' and "
                 + "day(Fecha)='" + dia + "'and year(Fecha)='" + year + "'" + " and NombreArchivoRespaldo is not null;";
@@ -399,6 +447,12 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         }
 
     }
+
+    /**
+     * Funcion que realiza la busqueda por nombre dispositivo seleccionado
+     *
+     * @author JULIO
+     */
 
     private void consultaPorNombre() {
         String sql = " select NombreArchivoRespaldo from Evento where "
@@ -420,6 +474,12 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que realiza la busqueda por de todos los valores
+     *
+     * @author JULIO
+     */
+
     private void consultaAll() {
         String sql = "select NombreArchivoRespaldo from Evento where NombreArchivoRespaldo is not null;";
         ResultSet res = Conectar.Consulta(sql);
@@ -439,6 +499,11 @@ public class ConsultaArchivo extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que verifica si la fecha es anticipada
+     *@param fecha
+     * @author JULIO
+     */
     private Boolean isAnticipado(String fecha) {
         try {
             ResultSet menor = Conectar.Consulta("select Min(Fecha) from Evento where NombreArchivoRespaldo is not null;");
@@ -458,6 +523,11 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         return false;
     }
 
+    /**
+     * Funcion que verifica si la fecha es futura
+     *@param fecha
+     * @author JULIO
+     */
     private Boolean isFuturo(String fecha) {
         try {
             ResultSet mayor = Conectar.Consulta("select Max(Fecha) from Evento where NombreArchivoRespaldo is not null;");
@@ -476,18 +546,33 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         return false;
     }
 
+    /**
+     * Funcion que 
+     *Habilita los selectores de dia mes y año
+     * @author JULIO
+     */
     private void activarCombo() {
         comboYear.enable(true);
         comboMes.enable(true);
         comboDia.enable(true);
     }
 
+    /**
+     * Funcion que Desactiva los selectores de dia mes y año
+     *
+     * @author JULIO
+     */
     private void desactivarCombo() {
         comboYear.enable(false);
         comboMes.enable(false);
         comboDia.enable(false);
     }
 
+    /**
+     * Funcion que actualiza la seleccion de los radio button
+     *
+     * @author JULIO
+     */
     private void actualizarTabla() {
         Timer timer = new Timer(2, (ActionEvent e) -> {
             if (radioNombre.isSelected() && !radioFecha.isSelected()) {
@@ -508,7 +593,11 @@ public class ConsultaArchivo extends javax.swing.JFrame {
     }
 
     /**
+     * Funcion que copia un archivo desde una ruta especificada hacia otra de  un archivo 
      * @author Cesar Navas
+     * @return boolean
+     * @param fromFile 
+     * @param toFile 
      */
     private boolean copyFile(String fromFile, String toFile) {
         File origin = new File(fromFile);
@@ -535,6 +624,11 @@ public class ConsultaArchivo extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Funcion que Realiza la descarga de los archivos 
+     *
+     * @author JULIO
+     */
     private void descargar(String Archivo) {
         String fromFile = "C:\\Users\\JULIO\\Documents\\NetBeansProjects\\2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1\\SistemaRespaldosDiarios\\src\\DocumentosGenerados\\" + Archivo;
         String toFile = "C:\\Users\\JULIO\\Downloads\\" + Archivo;

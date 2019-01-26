@@ -163,8 +163,8 @@ public class Fecha { //declaracion de clase Fecha
      */
 
     /**
-     *
-     * @return
+     *Funcion que imprime la fecha para la base de datos 
+     * @return String
      */
 
     public String imprimirFecha() {
@@ -174,14 +174,19 @@ public class Fecha { //declaracion de clase Fecha
     }
 
     /**
-     *
-     * @return
+     *Funcin que imprime la fecha conformato que puede guardar un archivo de texto
+     * @return String
      */
     public String imprimirFechaConHoraySeg() {
         String formato;
         formato = addCero(this.dia) + "_" + addCero(this.mes) + "_" + this.anio+"-"+this.hora+"%"+this.minutos+"%"+this.segundos;
         return formato;
     }
+    /**
+     * Funcion que añade cero a la izquierda de los enteros 
+     *
+     * @author JULIO
+     */
     private String addCero(int numero){
         if(numero>=10){
             return String.valueOf(numero);

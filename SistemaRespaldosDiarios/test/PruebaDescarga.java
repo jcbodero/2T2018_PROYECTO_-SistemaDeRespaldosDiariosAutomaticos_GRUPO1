@@ -44,7 +44,7 @@ public class PruebaDescarga {
     }
     @Test
     public void pruebaIngreso(){
-        Boolean resutado = this.descargar("ROUTER_UIO-15_01_2019-16%52%54.cfg");
+        Boolean resutado = this.descargar("ROUTER_GYE-17_01_2019-23%11%33.cfg");
         Assert.assertEquals(true, resutado);
     }
     private boolean copyFile(String fromFile, String toFile) {

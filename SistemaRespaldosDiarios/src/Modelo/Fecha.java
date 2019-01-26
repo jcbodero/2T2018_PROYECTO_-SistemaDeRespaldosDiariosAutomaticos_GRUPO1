@@ -174,7 +174,9 @@ public class Fecha { //declaracion de clase Fecha
     }
 
     /**
-     *Funcin que imprime la fecha conformato que puede guardar un archivo de texto
+     *Funcin que imprime la fecha conformato que puede guardar
+     * un archivo de texto
+     * 
      * @return String
      */
     public String imprimirFechaConHoraySeg() {

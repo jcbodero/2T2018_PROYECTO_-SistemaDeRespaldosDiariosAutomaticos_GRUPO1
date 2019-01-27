@@ -4,7 +4,7 @@
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
-\usepackage[spanish]{babel}
+\usepackage[spanish]{babel} 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -33,7 +33,7 @@
 	identifierstyle=\color{blue},
 	stringstyle=\color{orange},
 	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-	numbersep=15pt,  
+	numbersep=15pt,
 	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
 	rulecolor=\color{black},
 	columns =[l|l]flexible
@@ -82,7 +82,7 @@ edujvein@espol.edu.ec
 \maketitle
 
 \begin{abstract}
-	Este proyecto permitirá explicar el funcionamiento del sistema de respaldos diarios automáticos, las herramientas utilizadas y las configuraciones pertinentes en los dispositivos intermediarios para poder realizar el respaldo y la consulta. 
+	Este proyecto permitirá explicar el funcionamiento del sistema de respaldos diarios automáticos, las herramientas utilizadas y las configuraciones pertinentes en los dispositivos intermediarios para poder realizar el respaldo y la consulta.
 \end{abstract}
 
 \section{Introducción}\label{sec:int}
@@ -132,7 +132,7 @@ Una red OSPF se puede descomponer en regiones (áreas) más pequeñas. Hay un á
 	\label{fig:ddc01}
 \end{figure}
 
-Para el desarrollo de nuestro proyecto, nos basamos en la red de la figura \ref{fig:ddc01}, donde planteamos que desde cualquier red de las sucursales, por medio de un aplicativo, poder consultar a cualquier dispositivo intermediario presente de la red y hacer respaldos y consultas de los mismos. Para ello, el aplicativo cuenta con autenticación para ser utilizado, es decir la empresa tendrá una base de datos de usuarios que pueden realizar la gestión de resplado y consultas por medio del aplicativo, además de descargar dichos archivos de consultas. Todo estas conexiones se realizan por medio del protocolo SSH, que nos permite hacer conexión y adquirir los datos de los dispositivos intermediarios de manera segura. 
+Para el desarrollo de nuestro proyecto, nos basamos en la red de la figura \ref{fig:ddc01}, donde planteamos que desde cualquier red de las sucursales, por medio de un aplicativo, poder consultar a cualquier dispositivo intermediario presente de la red y hacer respaldos y consultas de los mismos. Para ello, el aplicativo cuenta con autenticación para ser utilizado, es decir la empresa tendrá una base de datos de usuarios que pueden realizar la gestión de resplado y consultas por medio del aplicativo, además de descargar dichos archivos de consultas. Todo estas conexiones se realizan por medio del protocolo SSH, que nos permite hacer conexión y adquirir los datos de los dispositivos intermediarios de manera segura.
 
 \section{Diseño e Implementación}
 El desarrollo del presente proyecto se realizó basándonos en el diagrama de la figura \ref{fig:ddc01}, teniendo que configurar cada dispositivo presente en el diagrama de acuerdo a las redes en las que se encuentran. Nos basamos en la tabla \ref{tab:dir01} para asignar las direcciones IPs de los dispositivos finales y de las interfaces de los dispositivos intermediarios. \\
@@ -160,7 +160,7 @@ El desarrollo del presente proyecto se realizó basándonos en el diagrama de la
 \label{tab:dir01}
 \end{center}
 \end{table}\\
-Observe que las interfaces de los dispositivos intermediarios son importantes en este proceso, ya que una interfaz mal configurada hará que no exista conectividad entre redes. Para interconectar las redes utilizamos el protocolo OSPF, el cual se configura en cada enrutador sucursal y en el enrutador matriz.\\ 
+Observe que las interfaces de los dispositivos intermediarios son importantes en este proceso, ya que una interfaz mal configurada hará que no exista conectividad entre redes. Para interconectar las redes utilizamos el protocolo OSPF, el cual se configura en cada enrutador sucursal y en el enrutador matriz.\\
 La configuración de cada enrutador dependerá del cuadro de direcciones \ref{tab:dir01}, se le asigna en primer lugar el direccionamiento y se habilita el protocolo OSPF para interconectar las redes. Para el caso del enrutador MATRIZ, sería como sigue:\\
 
 \lstinputlisting{/home/lianontano/Documentos/LaTeX/CE-Proyecto/2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1/archivosConfiguracion/conf-MATRIZ.txt}
@@ -177,13 +177,13 @@ Para mayor información acerca de la aplicación pueden consultar el repositorio
     \begin{subfigure}[h]{0.5\textwidth}
        \centerline{\includegraphics[width=0.7\textwidth]{img/ap01.jpg}}
         \caption{Inicio de sesión}
-        
+
     \end{subfigure}
-    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
      \begin{subfigure}[h]{0.5\textwidth}
         \centerline{\includegraphics[width=0.7\textwidth]{img/ap02.jpg}}
         \caption{Consulta de archivos de respaldo}
-        
+
     \end{subfigure}
     \caption{\textit{Interfaz gráfica de la aplicación.}}
 \label{fig:ap01}

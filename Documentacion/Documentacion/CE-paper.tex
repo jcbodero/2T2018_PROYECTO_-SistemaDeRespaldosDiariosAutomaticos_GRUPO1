@@ -59,79 +59,56 @@ edujvein@espol.edu.ec
 \end{abstract}
 
 \section{Introducción}\label{sec:int}
-Es necesario en una empresa, sea de grande o pequeña escala, tener las redes de sus sucursales siempre disponibles; de esta manera se garantiza el servicio que ofrece y el soporte a su empresa sin importar en que sucursal se encuentre el problema. Existen varias soluciones para mantener la alta disponibilidad de nuestra empresa, pero el riesgo de fallo siempre existirá y es ahí cuando el ingeniero de networking debe tener la solución disponible en un tiempo corto de respuesta. Por eso, la configuración de los equipos intermediarios de nuestra red es importante que esté al alcance de la persona encargada de dar soporte a la empresa, sin importar donde se encuentre. Este proyecto permite acceder a la configuración de los equipos intermediarios de nuestra red, en este caso utilizamos de ejemplo una red con tres dispositivos intermediarios, dos sucursales y una matriz. El aplicativo elaborado en el presente proyecto permite realizar un sistema de respaldo diario de estos dispositivos, así como una consulta de los mismos por fecha o por dispositivo. De esta manera ofrecemos una base de datos que servirá para ayudar a mitigar los problemas de fallas ya que se podrá acceder a los archivos de configuración de cualquier sucursal e identificar una posible mala configuración o un mal funcionamiento del mismo.
-
-\section{Antecedentes}\label{sec:ant}
-\subsection{\textbf{ VoIP:}}
-\textbf{Voz sobre protocolo de Internet} es un conjunto de recursos que hacen posible que la señal de voz viaje a través de Internet empleando el protocolo IP, es decir la señal se envía en forma digital, en paquetes de datos. Los protocolos de internet que se usan para enviar las señales de voz sobre la red IP se conocen como protocolos de voz sobre IP o protocolos IP.
-Es muy importante diferenciar entre voz sobre IP (VoIP) y telefonía sobre IP.
-\begin{itemize}
-\item VoIP es el conjunto de normas, dispositivos, protocolos ―en definitiva, la tecnología― que permite transmitir voz sobre el protocolo IP.
-\item La telefonía sobre IP es el servicio telefónico disponible al público, por tanto con numeración E.164, realizado con tecnología de VoIP.\footnote{Tampoco se debe confundir «telefonía sobre IP» con ToIP (text over IP: ‘texto sobre IP’).}
-\end{itemize}
+Es necesario en una empresa, sea de grande o pequeña escala, tener las redes de sus sucursales siempre disponibles; de esta manera se garantiza el servicio que ofrece y el soporte a su empresa sin importar en que sucursal se encuentre el problema. Existen varias soluciones para mantener la alta disponibilidad de nuestra empresa, pero el riesgo de fallo siempre existirá y es ahí cuando el ingeniero de networking debe tener la solución disponible en un tiempo corto de respuesta. Por eso, la configuración de los dispositivos intermediarios de nuestra red es importante que esté al alcance de la persona encargada de dar soporte a la empresa, sin importar donde se encuentre. Este proyecto permite acceder a la configuración de los equipos intermediarios de nuestra red, en este caso utilizamos de ejemplo una red con tres dispositivos intermediarios, dos sucursales y una matriz. El aplicativo elaborado en el presente proyecto permite realizar un sistema de respaldo diario de estos dispositivos, así como una consulta de los mismos por fecha o por dispositivo. De esta manera ofrecemos una base de datos que servirá para ayudar a mitigar los problemas de fallas ya que se podrá acceder a los archivos de configuración de cualquier sucursal e identificar una posible mala configuración o un mal funcionamiento del mismo.
 \begin{figure}[h]
-	\centerline{\includegraphics[width=0.3\textwidth]{img/voip01.jpg}}
-	\caption{Componentes de una central telefónica VoIP}
+	\centerline{\includegraphics[width=0.51\textwidth]{img/int01.png}}
+	\caption{Diagrama de red de las sucursales a respaldar}
 	\label{fig:ant00}
 \end{figure}
-Los elementos que forman parte de un servicio VoIP son los siguientes:
+\section{Antecedentes}\label{sec:ant}
+\subsection{\textbf{ Dispositivos intermediarios:}}
+Los dispositivos intermediarios interconectan dispositivos finales. Estos dispositivos proporcionan conectividad y operan detrás de escena para asegurar que los datos fluyan a través de la red. Los dispositivos intermediarios conectan los hosts individuales a la red y pueden conectar varias redes individuales para formar una internetwork.\\
+Los siguientes son ejemplos de dispositivos de red intermediarios:
 \begin{itemize}
-\item \textbf{Cliente}: es el que establece las llamadas de voz, se recibe a través del micrófono del usuario (entrada de información) se codifica, se empaqueta y, de la misma forma, esta información se decodifica y reproduce (salida de la información).\\
-Un cliente puede ser un usuario de Skype o un usuario de alguna empresa que venda sus servicios de telefonía sobre IP o teléfonos IP o \textit{Softphones} que es un software que permite realizar llamadas a través de una computadora conectada a internet.
-
-\item \textbf{Servidores}: son los que se encargan de manejar operaciones de base de datos, realizado en un tiempo real como en uno fuera de él. Entre estas operaciones se tienen la contabilidad, la recolección, el enrutamiento, la administración y control del servicio, el registro de los usuarios.\\
-Usualmente en los servidores se instala software denominados Switches o IP-PBX (conmutadores IP), ejemplos de switches pueden ser "Voipswitch", "Mera", "Nextone", entre otros, y de IP-PBX pueden ser los de Alcatel-Lucent, Cisco o Avaya en marcas comerciales y Asterisk de código abierto. Para el presente proyecto se utilizará Asterisk.
-\item \textbf{Gateways}: brindan un puente de comunicación entre todos los usuarios, su función principal es la de proveer interfaces con la telefonía tradicional adecuada, la cual funcionará como una plataforma para los usuarios (clientes) virtuales. Los gateways se utilizan para terminar la llamada, es decir: el cliente origina la llamada y el gateway termina la llamada, eso es cuando un cliente llama a un teléfono fijo o celular, debe existir la parte que hace posible que esa llamada que viene por internet logre conectarse con un cliente de una empresa telefónica fija o celular.
+\item Acceso a la red (switches y puntos de acceso inalámbrico)
+\item Internetworking (routers)
+\item Seguridad (firewalls)
 \end{itemize}
-\subsection{\textbf{ IP-PBX:}}
-Un conmutador IP o PBX por sus siglas en inglés de “Private Branch eXchange”, es la evolución de los viejos conmutadores basados en TDM; una red telefónica privada que es utilizada dentro de una empresa. En la actualidad, la era de las Comunicaciones Unificadas, los conmutadores IP ya no son simples plataformas de voz como lo eran antes. Un línea muy delgada separa las Comunicaciones Unificadas y la Telefonía IP.\\
-Un Conmutador IP o PBX IP conecta las extensiones internas dentro de una empresa y al mismo tiempo las conecta con la red pública conmutada, conocida también como PSTN (Public Switched Telephone Network), Proveedores VoIP y Troncales SIP, como se observa en la figura \ref{fig:ant00}.
-\subsection{\textbf{ Asterisk:}}
+
+\subsection{\textbf{Protocolo SSH:}}
 \begin{figure}[h]
-	\centerline{\includegraphics[width=0.2\textwidth]{img/asterisk01.png}}
-	\caption{Logo de Asterisk}
+	\centerline{\includegraphics[width=0.45\textwidth]{img/ant02.png}}
+	\caption{Funcionamiento del protocolo SSH}
 	\label{fig:ant02}
 \end{figure}
-\textit{Asterisk} es un programa de software libre (bajo licencia GPL) que proporciona funcionalidades de una central telefónica (PBX). Como cualquier PBX, se puede conectar un número determinado de teléfonos para hacer llamadas entre sí dentro de una misma organización e incluso acceder a comunicaciones fuera de la misma a la PSTN o conectando a un proveedor de VoIP o bien a una RDSI tanto básicos como primarios. Originalmente desarrollado para el sistema operativo GNU/Linux, \textit{Asterisk} actualmente también se distribuye en versiones para los sistemas operativos BSD, Mac OS X, Solaris y Microsoft Windows, aunque la plataforma nativa (GNU/Linux) es la que cuenta con mejor soporte de todas.\\
-\begin{figure}[h]
-	\centerline{\includegraphics[width=0.5\textwidth]{img/asteriksvoip00.png}}
-	\caption{Arquitectura de una red con \textit{Asterisk}}
-	\label{fig:ant03}
-\end{figure}
+
+SSH (o \textit{Secure SHell}) es el nombre de un protocolo y del programa que lo implementa cuya principal función es el acceso remoto a un servidor por medio de un canal seguro en el que toda la información está cifrada. SSH trabaja de forma similar a como se hace con \textit{telnet}. La diferencia principal es que SSH usa técnicas de cifrado que hacen que la información que viaja por el medio de comunicación vaya de manera no legible, evitando que terceras personas puedan descubrir el usuario y contraseña de la conexión ni lo que se escribe durante toda la sesión; aunque es posible atacar este tipo de sistemas por medio de ataques de REPLAY y manipular así la información entre destinos. El protocolo TCP asignado es el 22.
+
+\subsection{\textbf{ Protocolo de Transferencia de Archivos FTP:}}
+FTP es un protocolo de red para la transferencia de archivos entre sistemas conectados a una red TCP (Transmission Control Protocol), basado en la arquitectura cliente-servidor. Desde un equipo cliente se puede conectar a un servidor para descargar archivos desde él o para enviarle archivos, independientemente del sistema operativo utilizado en cada equipo.\\
+El servicio FTP es ofrecido por la capa de aplicación del modelo de capas de red TCP/IP al usuario, utilizando normalmente el puerto de red 20 y el 21. Un problema básico de FTP es que está pensado para ofrecer la máxima velocidad en la conexión, pero no la máxima seguridad, ya que todo el intercambio de información, desde el login y password del usuario en el servidor hasta la transferencia de cualquier archivo, se realiza en texto plano sin ningún tipo de cifrado, con lo que un posible atacante puede capturar este tráfico, acceder al servidor y/o apropiarse de los archivos transferidos.
+
 \textit{Asterisk} incluye muchas características que anteriormente sólo estaban disponibles en costosos sistemas propietarios PBX, como buzón de voz, conferencias, IVR, distribución automática de llamadas, y otras muchas. Los usuarios pueden crear nuevas funcionalidades escribiendo un dialplan en el lenguaje de script de \textit{Asterisk} o añadiendo módulos escritos en lenguaje C o en cualquier otro lenguaje de programación soportado en GNU/Linux.\\
 Uno de los puntos fuertes del software \textit{Asterisk} es que permite la unificación de tecnologías: VoIP, GSM y PSTN.\\
 \textit{Asterisk} se empieza a adoptar en algunos entornos corporativos como una gran solución de bajo coste junto con SER (Sip Express Router).
 
 
-\subsection{\textbf{ FreePBX:}}
-\textit{FreePBX} es una GUI (interfaz gráfica de usuario) de código abierto basado en web que controla y dirige \textit{Asterisk}. \textit{FreePBX} está licenciado bajo la GNU General Public License y es un componente del FreePBX Distro (una distribución de GNU/Linux, basada en CentOS con el sistema PBX pre-instalado).
-\begin{figure}[h]
-	\centerline{\includegraphics[width=0.25\textwidth]{img/freepbx01.png}}
-	\caption{Logo de FreePBX Distro}
-	\label{fig:ant04}
-\end{figure}
-
+\subsection{\textbf{ OSPF:}}
+\textit{Open Shortest Path First} (OSPF), Primer Camino Más Corto, es un protocolo de red para encaminamiento jerárquico de pasarela interior o Interior Gateway Protocol (IGP), que usa el algoritmo Dijkstra, para calcular la ruta más corta entre dos nodos.\\
+Su medida de métrica se denomina cost, y tiene en cuenta diversos parámetros tales como el ancho de banda y la congestión de los enlaces. OSPF construye además una base de datos enlace-estado (Link-State Database, LSDB) idéntica en todos los routers de la zona.\\
+Una red OSPF se puede descomponer en regiones (áreas) más pequeñas. Hay un área especial llamada área backbone que forma la parte central de la red a la que se encuentran conectadas el resto de áreas de la misma. Las rutas entre las diferentes áreas circulan siempre por el backbone, por lo tanto todas las áreas deben conectar con el backbone. Si no es posible hacer una conexión directa con el backbone, se puede hacer un enlace virtual entre redes.
 
 \section{Desarrollo del concepto}\label{sec:ddc}
 \begin{figure}[h]
-	\centerline{\includegraphics[width=0.3\textwidth]{img/diagrama01.png}}
-	\caption{Diagrama a implementar con FreePBX como servidor y dos clientes}
+	\centerline{\includegraphics[width=0.50\textwidth]{img/desa01.png}}
+	\caption{Diagrama completo de red de nuestra empresa. Se observa que los dispositivos intermediarios interconectan dos sucursales diferentes con la matriz.}
 	\label{fig:ddc01}
 \end{figure}
 
-Para el desarrollo de nuestro proyecto, lo haremos de manera local por medio de una máquina virtual que hará de servidor y en cual se conectará dos clientes, un dispositivo móvil y una laptop, donde la laptop hará de cliente y de administrador ya que tendrá acceso a la interfaz gráfica de FreePBX para su administración. En los clientes los dispositivos harán de \textit{softphones}, con diferentes software para cada uno en el cual no entraremos en detalle dado que nos interesa la administración del servidor de nuestra central telefónica que le brindará servicio a esos dos clientes.
+Para el desarrollo de nuestro proyecto, nos basamos en la red de la figura \ref{fig:ddc01}, donde planteamos que desde cualquier red de las sucursales, por medio de un aplicativo, poder consultar a cualquier dispositivo intermediario presente de la red y hacer respaldos y consultas de los mismos. Para ello, el aplicativo cuenta con autenticación para ser utilizado, es decir la empresa tendrá una base de datos de usuarios que pueden realizar la gestión de resplado y consultas por medio del aplicativo, además de descargar dichos archivos de consultas. Todo estas conexiones se realizan por medio del protocolo SSH, que nos permite hacer conexión y adquirir los datos de los dispositivos intermediarios de manera segura. 
 
-\section{Putamadre}
-\subsection{Raspberry Pi 3}
-Es el modelo más antiguo de la tercera generación de Raspberry Pi. Reemplazó el Raspberry Pi 2 Model B en febrero de 2016. Desarrollado en el Reino Unido por la fundación \textbf{Raspberry Pi}, con el objetivo de estimular la enseñanza de informática en las escuelas. \\
-Salió a la luz en el año 2016, renueva procesador, una vez más de la compañía Broadcom, una vez más un Quad-Core, pero pasa de 900 MHz a 1.20 GHz. Mantiene la RAM de 1GB. Su novedad fue la inclusión de Wi-Fi y Bluetooth (4.1 Low Energy) sin necesidad de adaptadores.
-\begin{figure}[h]
-	%\centerline{\includegraphics[width=0.3\textwidth]{platform/rasp.jpg}}
-	\caption{Raspberry Pi3 Modelo B.}
-	\label{fig:ant01}
-\end{figure}
-Según Amazon, el precio está oscilando entre 50 y 70 dólares, dependiento del kit a comprar, donde incluyen módulos y memorias adicionales para su uso con la Raspberry.\\
-Las características principales se las puede observar en el cuadro \ref{tab:rb01}.
+\section{Diseño e Implementación}
+
 \begin{table}[tbp]
 \begin{center}
 	\begin{tabular}{|p{2.5cm}|p{5.5cm}|}

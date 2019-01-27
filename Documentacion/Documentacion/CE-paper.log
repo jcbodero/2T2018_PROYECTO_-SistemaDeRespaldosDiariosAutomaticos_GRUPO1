@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.1)  27 JAN 2019 08:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.11.1)  27 JAN 2019 10:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -844,96 +844,74 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for U+msa on input line 70.
+<img/int01.png, id=1, 1882.03125pt x 847.165pt>
+File: img/int01.png Graphic file (type png)
+<use img/int01.png>
+Package pdftex.def Info: img/int01.png  used on input line 64.
+(pdftex.def)             Requested size: 263.15717pt x 118.44716pt.
+<img/ant02.png, id=3, 3149.7675pt x 959.585pt>
+File: img/ant02.png Graphic file (type png)
+<use img/ant02.png>
+Package pdftex.def Info: img/ant02.png  used on input line 80.
+(pdftex.def)             Requested size: 232.19843pt x 70.73582pt.
 
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+
+ <./img/int01.png> <./img/ant02.png>]
+<img/desa01.png, id=15, 613.8132pt x 438.438pt>
+File: img/desa01.png Graphic file (type png)
+<use img/desa01.png>
+Package pdftex.def Info: img/desa01.png  used on input line 103.
+(pdftex.def)             Requested size: 258.0pt x 184.28987pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 123.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 70.
+LaTeX Font Info:    Try loading font information for U+msb on input line 123.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 70.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
-File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-)
-<img/voip01.jpg, id=1, 523.9575pt x 435.6275pt>
-File: img/voip01.jpg Graphic file (type jpg)
-<use img/voip01.jpg>
-Package pdftex.def Info: img/voip01.jpg  used on input line 73.
-(pdftex.def)             Requested size: 154.80157pt x 128.70177pt.
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
-
-
- <./img/voip01.jpg>]
-<img/asterisk01.png, id=12, 1204.5pt x 710.655pt>
-File: img/asterisk01.png Graphic file (type png)
-<use img/asterisk01.png>
-Package pdftex.def Info: img/asterisk01.png  used on input line 91.
-(pdftex.def)             Requested size: 103.19843pt x 60.87657pt.
-<img/asteriksvoip00.png, id=14, 482.80376pt x 309.155pt>
-File: img/asteriksvoip00.png Graphic file (type png)
-<use img/asteriksvoip00.png>
-Package pdftex.def Info: img/asteriksvoip00.png  used on input line 97.
-(pdftex.def)             Requested size: 258.0pt x 165.20995pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<img/freepbx01.png, id=15, 505.89pt x 186.6975pt>
-File: img/freepbx01.png Graphic file (type png)
-<use img/freepbx01.png>
-Package pdftex.def Info: img/freepbx01.png  used on input line 109.
-(pdftex.def)             Requested size: 129.0pt x 47.6058pt.
-<img/diagrama01.png, id=16, 339.2675pt x 234.8775pt>
-File: img/diagrama01.png Graphic file (type png)
-<use img/diagrama01.png>
-Package pdftex.def Info: img/diagrama01.png  used on input line 117.
-(pdftex.def)             Requested size: 154.80157pt x 107.17047pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 6348) in paragraph at lines 143--143
+Underfull \hbox (badness 6348) in paragraph at lines 129--129
 []\OT1/ptm/m/n/8 Almacenamiento in-
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 144--144
+Underfull \hbox (badness 1558) in paragraph at lines 130--130
 []\OT1/ptm/m/n/8 10/100 Et-her-net RJ-45 v[]^^Pa hub USB, Wi-fi
  []
 
 
-Underfull \hbox (badness 1552) in paragraph at lines 145--145
+Underfull \hbox (badness 1552) in paragraph at lines 131--131
 []\OT1/ptm/m/n/8 Fuente de ali-men-ta-
  []
 
 
-Underfull \hbox (badness 7851) in paragraph at lines 146--146
-[]\OT1/ptm/m/n/8 Sistemas Ope-ra-ti-vos
- []
-
-[2 <./img/asterisk01.png> <./img/asteriksvoip00.png> <./img/freepbx01.png>]
-Underfull \hbox (badness 7851) in paragraph at lines 175--175
+Underfull \hbox (badness 7851) in paragraph at lines 132--132
 []\OT1/ptm/m/n/8 Sistemas Ope-ra-ti-vos
  []
 
 
-Underfull \hbox (badness 7851) in paragraph at lines 194--194
+Underfull \hbox (badness 7851) in paragraph at lines 161--161
+[]\OT1/ptm/m/n/8 Sistemas Ope-ra-ti-vos
+ []
+
+[2 <./img/desa01.png>]
+Underfull \hbox (badness 7851) in paragraph at lines 180--180
 []\OT1/ptm/m/n/8 Sistemas Ope-ra-ti-vos
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 7851) in paragraph at lines 223--223
+Underfull \hbox (badness 7851) in paragraph at lines 209--209
 []\OT1/ptm/m/n/8 Sistemas Ope-ra-ti-vos
  []
 
-[3 <./img/diagrama01.png>]
+[3]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -945,7 +923,9 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4] (./CE-paper.aux
+[4
+
+] (./CE-paper.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 )
@@ -954,23 +934,22 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5659 strings out of 492982
- 78610 string characters out of 6134896
- 166672 words of memory out of 5000000
- 9109 multiletter control sequences out of 15000+600000
- 49576 words of font info for 95 fonts, out of 8000000 for 9000
+ 5623 strings out of 492982
+ 77868 string characters out of 6134896
+ 165656 words of memory out of 5000000
+ 9083 multiletter control sequences out of 15000+600000
+ 44617 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,12n,35p,1356b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,12n,35p,1361b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/latxfont/lasy8.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/t
-imes/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pf
-b>
-Output written on CE-paper.pdf (4 pages, 291635 bytes).
+e/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
+times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.p
+fb>
+Output written on CE-paper.pdf (4 pages, 383064 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 27 compressed objects within 1 object stream
+ 41 PDF objects out of 1000 (max. 8388607)
+ 24 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

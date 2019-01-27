@@ -8,9 +8,36 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{multirow}
 \usepackage{xcolor}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage[colorinlistoftodos]{todonotes}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\lstset{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	xleftmargin=1.25cm,
+	language=matlab,
+	showstringspaces=false,
+	basicstyle=\scriptsize \ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=15pt,  
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},
+	columns =[l|l]flexible
+}
 \begin{document}
 
 \title{
@@ -55,14 +82,14 @@ edujvein@espol.edu.ec
 \maketitle
 
 \begin{abstract}
-	Este proyecto permitirá explicar el funcionamiento del proyecto realizado, las herramientas utilizadas y las configuraciones pertinentes en los dispositivos intermediarios para poder realizar el respaldo y la consulta.
+	Este proyecto permitirá explicar el funcionamiento del sistema de respaldos diarios automáticos, las herramientas utilizadas y las configuraciones pertinentes en los dispositivos intermediarios para poder realizar el respaldo y la consulta. 
 \end{abstract}
 
 \section{Introducción}\label{sec:int}
 Es necesario en una empresa, sea de grande o pequeña escala, tener las redes de sus sucursales siempre disponibles; de esta manera se garantiza el servicio que ofrece y el soporte a su empresa sin importar en que sucursal se encuentre el problema. Existen varias soluciones para mantener la alta disponibilidad de nuestra empresa, pero el riesgo de fallo siempre existirá y es ahí cuando el ingeniero de networking debe tener la solución disponible en un tiempo corto de respuesta. Por eso, la configuración de los dispositivos intermediarios de nuestra red es importante que esté al alcance de la persona encargada de dar soporte a la empresa, sin importar donde se encuentre. Este proyecto permite acceder a la configuración de los equipos intermediarios de nuestra red, en este caso utilizamos de ejemplo una red con tres dispositivos intermediarios, dos sucursales y una matriz. El aplicativo elaborado en el presente proyecto permite realizar un sistema de respaldo diario de estos dispositivos, así como una consulta de los mismos por fecha o por dispositivo. De esta manera ofrecemos una base de datos que servirá para ayudar a mitigar los problemas de fallas ya que se podrá acceder a los archivos de configuración de cualquier sucursal e identificar una posible mala configuración o un mal funcionamiento del mismo.
 \begin{figure}[h]
 	\centerline{\includegraphics[width=0.51\textwidth]{img/int01.png}}
-	\caption{Diagrama de red de las sucursales a respaldar}
+	\caption{\textit{Diagrama de red de las sucursales a respaldar}}
 	\label{fig:ant00}
 \end{figure}
 \section{Antecedentes}\label{sec:ant}
@@ -78,7 +105,7 @@ Los siguientes son ejemplos de dispositivos de red intermediarios:
 \subsection{\textbf{Protocolo SSH:}}
 \begin{figure}[h]
 	\centerline{\includegraphics[width=0.45\textwidth]{img/ant02.png}}
-	\caption{Funcionamiento del protocolo SSH}
+	\caption{\textit{Funcionamiento del protocolo SSH}}
 	\label{fig:ant02}
 \end{figure}
 
@@ -101,122 +128,85 @@ Una red OSPF se puede descomponer en regiones (áreas) más pequeñas. Hay un á
 \section{Desarrollo del concepto}\label{sec:ddc}
 \begin{figure}[h]
 	\centerline{\includegraphics[width=0.50\textwidth]{img/desa01.png}}
-	\caption{Diagrama completo de red de nuestra empresa. Se observa que los dispositivos intermediarios interconectan dos sucursales diferentes con la matriz.}
+	\caption{\textit{Diagrama completo de red de nuestra empresa. Se observa que los dispositivos intermediarios interconectan dos sucursales diferentes con la matriz.}}
 	\label{fig:ddc01}
 \end{figure}
 
-Para el desarrollo de nuestro proyecto, nos basamos en la red de la figura \ref{fig:ddc01}, donde planteamos que desde cualquier red de las sucursales, por medio de un aplicativo, poder consultar a cualquier dispositivo intermediario presente de la red y hacer respaldos y consultas de los mismos. Para ello, el aplicativo cuenta con autenticación para ser utilizado, es decir la empresa tendrá una base de datos de usuarios que pueden realizar la gestión de resplado y consultas por medio del aplicativo, además de descargar dichos archivos de consultas. Todo estas conexiones se realizan por medio del protocolo SSH, que nos permite hacer conexión y adquirir los datos de los dispositivos intermediarios de manera segura.
+Para el desarrollo de nuestro proyecto, nos basamos en la red de la figura \ref{fig:ddc01}, donde planteamos que desde cualquier red de las sucursales, por medio de un aplicativo, poder consultar a cualquier dispositivo intermediario presente de la red y hacer respaldos y consultas de los mismos. Para ello, el aplicativo cuenta con autenticación para ser utilizado, es decir la empresa tendrá una base de datos de usuarios que pueden realizar la gestión de resplado y consultas por medio del aplicativo, además de descargar dichos archivos de consultas. Todo estas conexiones se realizan por medio del protocolo SSH, que nos permite hacer conexión y adquirir los datos de los dispositivos intermediarios de manera segura. 
 
 \section{Diseño e Implementación}
+El desarrollo del presente proyecto se realizó basándonos en el diagrama de la figura \ref{fig:ddc01}, teniendo que configurar cada dispositivo presente en el diagrama de acuerdo a las redes en las que se encuentran. Nos basamos en la tabla \ref{tab:dir01} para asignar las direcciones IPs de los dispositivos finales y de las interfaces de los dispositivos intermediarios. \\
+\begin{table}[h]
+\begin{center}
+	\begin{tabular}{|l|l|l|c|}
+	\hline
+	\textbf{Dispositivo} &\textbf{Interfaz} &\textbf{Dirección/Máscara} &\textbf{ Gateway }\\ \hline
+	\multirow{3}{*}{ROUTER-GYE}& f0/0 & 192.168.1.1/24 & n/a\\ \cline{2-4}
+	&s0/2/0  &10.1.1.1/30 & n/a \\ \cline{2-4}
+	&s0/2/1 &10.3.3.1/30 & n/a\\ \hline
+	\multirow{3}{*}{ROUTER-UIO}& f0/0 & 192.168.2.1/24 & n/a\\ \cline{2-4}
+	&s0/2/0  &10.2.2.2/30 & n/a \\ \cline{2-4}
+	&s0/2/1 &10.3.3.2/30 & n/a\\ \hline
+	\multirow{3}{*}{MATRIZ}& f0/0 & 192.168.3.1/24 & n/a\\ \cline{2-4}
+	& f0/1 & 192.168.4.1/24 & n/a\\ \cline{2-4}
+	&s0/2/0  &10.1.1.2/30 & n/a \\ \cline{2-4}
+	&s0/2/1 &10.2.2.1/30 & n/a\\ \hline
+	Usuario 1 & NIC & 192.168.1.3/24 &192.168.1.1 \\\hline
+	Usuario 2 & NIC & 192.168.2.3/24 &192.168.2.1 \\\hline
+	Servidor DB & NIC & 192.168.3.3/24 &192.168.3.1 \\\hline
+	Servidor FTP & NIC & 192.168.4.3/24 &192.168.4.1 \\\hline
+\end{tabular}\vspace{0.25cm}
+\caption{\textit{Direccionamiento de red de la figura \ref{fig:ddc01}}}
+\label{tab:dir01}
+\end{center}
+\end{table}\\
+Observe que las interfaces de los dispositivos intermediarios son importantes en este proceso, ya que una interfaz mal configurada hará que no exista conectividad entre redes. Para interconectar las redes utilizamos el protocolo OSPF, el cual se configura en cada enrutador sucursal y en el enrutador matriz.\\ 
+La configuración de cada enrutador dependerá del cuadro de direcciones \ref{tab:dir01}, se le asigna en primer lugar el direccionamiento y se habilita el protocolo OSPF para interconectar las redes. Para el caso del enrutador MATRIZ, sería como sigue:\\
 
-\begin{table}[tbp]
-\begin{center}
-	\begin{tabular}{|p{2.5cm}|p{5.5cm}|}
-	\hline
-	\textbf{Especificaciones} &\textbf{Raspberry Pi3 Modelo B} \\ \hline
-	CPU  &1.2GHz 64-bit quad-core ARMv8 \\\hline
-	Memoria (SDRAM) &1 GB compartidos con la GPU \\\hline
-	Puertos USB &4 \\\hline
-	Almacenamiento integrado &MicroSD \\\hline
-	Conectividad de red &10/100 Ethernet RJ-45 vía hub USB, Wifi 802.11n, Bluetooth 4.1 \\\hline
-	Fuente de alimentación &5 V vía micro USB o GPIO header \\\hline
-	Sistemas Operativos Soportados &GNU/Linux: Debian (Raspbian), Fedora (Pidora), Arch Linux (Arch Linux ARM), Slackware Linux, SUSE Linux Enterprise Server for ARM. RISC OS.\\\hline
-\end{tabular}\vspace{0.25cm}
-\caption{Características Raspeberry Pi 3 Modelo B}
-\label{tab:rb01}
-\end{center}
-\end{table}
+\lstinputlisting{/home/lianontano/Documentos/LaTeX/CE-Proyecto/2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1/archivosConfiguracion/conf-MATRIZ.txt}
 
-	\subsection{Arduino Uno R3}
-	El Arduino Uno R3 utiliza el microcontrolador ATmega328. En adición a todas las características de las tarjetas anteriores, el Arduino Uno utiliza el ATmega16U2 para el manejo de USB en lugar del 8U2 (o del FTDI encontrado en generaciones previas). Esto permite ratios de transferencia más rápidos y más memoria. No se necesitan drivers para Linux o Mac (el archivo inf para Windows es necesario y está incluido en el IDE de Arduino).\\
-	\textbf{Arduino} es una compañía open source y open hardware, así como un proyecto y comunidad internacional que diseña y manufactura placas de desarrollo de hardware para construir dispositivos digitales y dispositivos interactivos que puedan sensar y controlar objetos del mundo real. \\
-	El microcontrolador de la placa se programa usando el “Arduino Programming Language” (basado en Wiring) y el “Arduino Development Environment” (basado en Processing). Los proyectos de Arduino pueden ser autonomos o se pueden comunicar con software en ejecución en un ordenador (por ejemplo con Flash, Processing, MaxMSP, etc.).
-	\begin{figure}[h]
-	%\centerline{\includegraphics[width=0.25\textwidth]{platform/ardui}}
-	\caption{Arduino Uno R3.}
-	\label{fig:ardui}
-	\end{figure}
-	 El precio en Amazon oscila entre los 12 y 30 dólares, dependiendo del kit a comprar.\\
-	Las características principales están presentes en el cuadro \ref{tab:ardui01}.
-	\begin{table}[h]
-\begin{center}
-	\begin{tabular}{|p{2.5cm}|p{5.5cm}|}
-	\hline
-	\textbf{Especificaciones} &\textbf{Arduino Uno R3} \\ \hline
-	Microcontrolador  &ATmega328 \\\hline
-	Voltaje de entrada &7 - 12 V \\\hline
-	Entradas digitales &14 pines digitales de I/0 (6 salidas PWM) \\\hline
-	Entradas analógicas & 6 entradas análogas \\\hline
-	Memoria Flash &32k\\\hline
-	Reloj &16MHz \\\hline
-	Sistemas Operativos Soportados &N/A.\\\hline
-\end{tabular}\vspace{0.25cm}
-\caption{Características Arduino Uno R3}
-\label{tab:ardui01}
-\end{center}
-\end{table}
-	\subsection{Beaglebone black}
-	Es una computadora barebone de desarrollo, la sucesora de la beaglebone lanzada en octubre de 2011. El precio está en 45 dólares y entre otras diferencias incrementa la RAM a 512 MB, el reloj de procesador a 1GHz, y añade HDMI y 2 GB de memoria flash eMMC. También se entrega con kernel Linux 3.8, permitiendo a la BeagleBone Black tener la ventaja del Gestor de Renderizado Directo (DRM).Demás especificaciones se observa en el cuadro \ref{tab:bb01}
-		\begin{table}[h]
-\begin{center}
-	\begin{tabular}{|p{2.5cm}|p{5.5cm}|}
-	\hline
-	\textbf{Especificaciones} &\textbf{BeagleBone Black} \\ \hline
-	CPU  &Cortex-A8 + 2xPRU (200MHz) \\\hline
-	Frecuencia SoC &1000MHz \\\hline
-	DSP &DDR3 \\\hline
-	Memoria & 512 \\\hline
-	Memoria Flash &32k\\\hline
-	Reloj &16MHz \\\hline
-	Sistemas Operativos Soportados &Rowboat,Angstrom, Fedora, FreeBSD, MINIX 3, NetBSD, OpenBSD, openSUSE, QNX, RISC OS, Ubuntu, Void Linux, Windows Embedded.\\\hline
-\end{tabular}\vspace{0.25cm}
-\caption{Características BeagleBone Black}
-\label{tab:bb01}
-\end{center}
-\end{table}
+Ahora, ya teniendo la red configurada, se requiere el acceso a los enrutadores vía SSH, para lo que de igual manera requiere ser configurado para cada enrutador, como sigue:
+
+\lstinputlisting{/home/lianontano/Documentos/LaTeX/CE-Proyecto/2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1/archivosConfiguracion/SSh-ROUTER-MATRIZ.txt}
+
+Ya en este punto, podemos acceder a los enrutadores vía SSH.\\
+La parte de la aplicación, requiere un servidor FTP y un servidor de Base de Datos; ambos en este caso, se encuentran conectados en el enrutador MATRIZ. El servidor FTP permitirá la descarga de los archivos que se generen de los respaldos y el servidor de la base de datos llevará un control de las actividades que se realicen por medio de la aplicación.\\
+La aplicación fue desarrollada en Java, y es ella la que realiza la conexión por SSH con los enrutadores y genera los archivos de configuración de cada enrutador. El administrador selecciona cual enrutador desea generar respaldo o consultar los respaldos generados como se observa en la figura \ref{fig:ap01}.\\
+Para mayor información acerca de la aplicación pueden consultar el repositorio de gitHub de este proyecto \href{https://github.com/jcbodero/2T2018_PROYECTO_SistemaDeRespaldosDiariosAutomaticos_GRUPO1}{\textcolor{red}{\textbf{aquí}}}.
 \begin{figure}[h]
-	%\centerline{\includegraphics[width=0.2\textwidth]{platform/bb.jpg}}
-	\caption{BeagleBone Black.}
-	\label{fig:ant01}
+    \begin{subfigure}[h]{0.5\textwidth}
+       \centerline{\includegraphics[width=0.7\textwidth]{img/ap01.jpg}}
+        \caption{Inicio de sesión}
+        
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+     \begin{subfigure}[h]{0.5\textwidth}
+        \centerline{\includegraphics[width=0.7\textwidth]{img/ap02.jpg}}
+        \caption{Consulta de archivos de respaldo}
+        
+    \end{subfigure}
+    \caption{\textit{Interfaz gráfica de la aplicación.}}
+\label{fig:ap01}
 \end{figure}
-\subsection{pcDuino}
-	\textbf{pcDuino} es una mini computadora o plataforma de computadora de una sola placa que funciona con PC como el sistema operativo, como Ubuntu y Android ICS. Da salida a la pantalla a HDMI. Además, tiene una interfaz de encabezados de hardware compatible con Arduino (TM). pcDuino puede usarse para enseñar Python, C y más cosas interesantes.\\
-	\begin{figure}[h]
-	%\centerline{\includegraphics[width=0.2\textwidth]{platform/pcd.png}}
-	\caption{pcDuino1.}
-	\label{fig:ant01}
-\end{figure}
-	\textit{pcDuino1} es una plataforma de mini PC rentable y de alto rendimiento que ejecuta PC como SO, como Ubuntu y Android ICS. Envía su pantalla a un televisor o monitor habilitado con HDMI a través de la interfaz HDMI incorporada. Está especialmente dirigido a las crecientes demandas de la comunidad de código abierto. La plataforma podría funcionar como un sistema operativo tipo PC completo con una cadena de herramientas fácil de usar y compatible con el popular ecosistema Arduino, como Arduino Shields (puede que necesite un puente protector) y proyectos de código abierto, etc. Las características principales se las observa en el cuadro \ref{tab:pcd01}.\\
-			\begin{table}[h]
-\begin{center}
-	\begin{tabular}{|p{2.5cm}|p{5.5cm}|}
-	\hline
-	\textbf{Especificaciones} &\textbf{pcDuino1} \\ \hline
-	CPU  &1GHz ARM Cortex A8\\\hline
-	DRAM &1 GB \\\hline
-	Almacenamiento OnBoard &2GB Flash, microSD card slot hasta 32 GB \\\hline
-	Interfaz de Red & 10/100Mbps RJ45 y USB Wifi extensión\\\hline
-	Alimentación &5V, 2A\\\hline
-	Sistemas Operativos Soportados &Linux3.0 + Ubuntu 12.04Android ICS 4.0\\\hline
-\end{tabular}\vspace{0.25cm}
-\caption{Características pcDuino1}
-\label{tab:pcd01}
-\end{center}
-\end{table}
-\section{Comparación de Plataformas}
-Cada uno de estas mini computadoras tienen su correcto desarrollo dependiendo del aplicativo en el que le estén usando, es decir su uso dependerá de la función que lo pongas a realizar. La de menor escalabilidad podríamos mencionar a Arduino, ya que en primer lugar es un microcontrolador, y hay cosas en las que se queda corto, pero es ideal para llevar control de todo tipo de sensores y actadores y por su precio más todavía. Los restantes dependerá del sistema operativo a usarse, y los GPIOS que requeramos usar, si queremos un sistema operativo en tiempo real, la tasa de datos que queramos procesar, todas esas consideraciones hay que tener en cuenta al momento de escoger que plataforma utilizar.
+
+
 \section{Conclusiones}
 \begin{itemize}
-	\item Las plataformas de prototipado permite elaborar a bajo costo operaciones de hardware por medio de periféricos de manera más sencilla.
-	\item La utilización de las plataformas dependerá de la función que quiera realizar.
+	\item Es importante el manejo de logs en redes que demanda el uso de varios dispositivos ya que ayuda a detectar fallas y corregir errores en los dispositivos causantes.
+	\item La configuración de los dispositivos es el punto clave para que exista forma de conectar la aplicación con nuestra red.
+	\item El sistema de respaldo diarios permite control remoto de dispositivos de una empresa ayudando al soporte técnico a reducir gastos.
+\end{itemize}
+\section{Recomendaciones}
+\begin{itemize}
+	\item El protocolo FTP a largo plazo se tendrá que cambiar por un protocolo más seguro.
+	\item Es indispensable realizar una aplicación compatible con dispositivos móviles para hacer que el sistema sea multiplataforma, de esta manera dará mayor alcance el presente proyecto.
 \end{itemize}
 
 \begin{thebibliography}{00}
-\bibitem{b1}  Liz upton, ``Introducing the New Out Of Box Software (NOOBS)'' , Raspberry Pi, 2013.
-\bibitem{b2} Shead, Sam, ``Raspberry Pi delivery delays leave buyers hungry (and angry)", ZDNet, Octubre 2012.
-\bibitem{b3} GSyC, ``Simple Network Managment Protocol,''  Universidad Rey Juan Carlos, 2013.
-\bibitem{b4} LinkSprite, ``pcDuino1 Overview ,''  admin.
-\bibitem{b5} ``OMAP3530 BeagleBoard" High perfomance and numerous expansion options; page 3, Dkc1.digikey.com , Mayo 2009.
+\bibitem{b1}  J. Moy: RFC 2328, ``OSPF Version 2'' , IETF (abril de 1998)
+\bibitem{b2} Daniel J. Barrett, Richard E. Silverman, and Robert G. Byrnes, ``SSH: The Secure Shell (The Definitive Guide)", O'Reilly 2005 (2nd edition). ISBN 0-596-00895-3.
+\bibitem{b3} Gleason, Mike, ``The File Transfer Protocol and Your Firewall/NAT'',  Ncftp.com (2005).
+
 \end{thebibliography}
 
 \end{document}
